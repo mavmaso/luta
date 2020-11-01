@@ -6,6 +6,10 @@ defmodule Luta.Battle do
   import Ecto.Query, warn: false
   alias Luta.Repo
 
+  def battle_turn(%{arena_id: _a_id, player: player, action: action}) do
+    %{scene: [%{msg: "#{player.name} has a #{action.card.name}"}]}
+  end
+
   alias Luta.Battle.Arena
 
   @doc """

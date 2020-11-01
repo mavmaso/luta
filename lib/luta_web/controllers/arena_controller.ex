@@ -8,7 +8,7 @@ defmodule LutaWeb.ArenaController do
   # action_fallback LutaWeb.FallbackController
 
   def index(conn, _params) do
-    arenas = Battle.list_arenas() |> IO.inspect
+    arenas = Battle.list_arenas()
     json(conn, %{data: arenas})
   end
 end

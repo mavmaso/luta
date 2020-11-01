@@ -9,6 +9,8 @@ defmodule LutaWeb.Router do
     pipe_through :api
 
     get "/arena", ArenaController, :index
+
+    post "/battle", BattleController, :battle
   end
 
   # Enables LiveDashboard only for development
