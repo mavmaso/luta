@@ -1,66 +1,61 @@
 defmodule Luta.AuthTest do
   use Luta.DataCase
 
+  import Luta.Factory
+
   alias Luta.Auth
 
   describe "users" do
     alias Luta.Auth.User
 
-    @valid_attrs %{login: "some login", password: "some password"}
-    @update_attrs %{login: "some updated login", password: "some updated password"}
-    @invalid_attrs %{login: nil, password: nil}
-
-    def user_fixture(attrs \\ %{}) do
-      {:ok, user} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Auth.create_user()
-
-      user
-    end
-
     test "list_users/0 returns all users" do
-      user = user_fixture()
-      assert Auth.list_users() == [user]
+      user = insert(:user)
+
+      assert [subject] = Auth.list_users()
     end
 
     test "get_user!/1 returns the user with given id" do
-      user = user_fixture()
+      user = insert(:user)
+
       assert Auth.get_user!(user.id) == user
     end
 
     test "create_user/1 with valid data creates a user" do
-      assert {:ok, %User{} = user} = Auth.create_user(@valid_attrs)
-      assert user.login == "some login"
-      assert user.password == "some password"
+      params = params_for(:user, %{password: "123456"})
+
+      assert {:ok, %User{} = user} = Auth.create_user(params)
+      assert user.login == params.login
+      # assert user.password == params.password
     end
 
     test "create_user/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Auth.create_user(@invalid_attrs)
+      insert(:user, %{login: "usei"})
+      params = params_for(:user, %{login: "usei"})
+
+      assert {:error, %Ecto.Changeset{}} = Auth.create_user(params)
     end
 
     test "update_user/2 with valid data updates the user" do
-      user = user_fixture()
-      assert {:ok, %User{} = user} = Auth.update_user(user, @update_attrs)
-      assert user.login == "some updated login"
-      assert user.password == "some updated password"
+      user = insert(:user)
+      params = params_for(:user)
+
+      assert {:ok, %User{} = user} = Auth.update_user(user, params)
+      assert user.login == params.login
+      assert user.password == params.password
     end
 
-    test "update_user/2 with invalid data returns error changeset" do
-      user = user_fixture()
-      assert {:error, %Ecto.Changeset{}} = Auth.update_user(user, @invalid_attrs)
-      assert user == Auth.get_user!(user.id)
-    end
+    # test "update_user/2 with invalid data returns error changeset" do
+    #   user = insert(:user)
+    #   params = params_for(:user, %{password: "usei"})
+
+    #   assert {:error, %Ecto.Changeset{}} = Auth.update_user(user, params)
+    # end
 
     test "delete_user/1 deletes the user" do
-      user = user_fixture()
+      user = insert(:user)
+
       assert {:ok, %User{}} = Auth.delete_user(user)
       assert_raise Ecto.NoResultsError, fn -> Auth.get_user!(user.id) end
-    end
-
-    test "change_user/1 returns a user changeset" do
-      user = user_fixture()
-      assert %Ecto.Changeset{} = Auth.change_user(user)
     end
   end
 end

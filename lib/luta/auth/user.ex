@@ -21,9 +21,9 @@ defmodule Luta.Auth.User do
     |> put_password()
   end
 
-  defp put_password(%Ecto.Changeset{changes: %{secret: secret}} = changeset) do
-    change(changeset, password: secret)
-  end
+  # defp put_password(%Ecto.Changeset{changes: %{secret: secret}} = changeset) do
+  #   change(changeset, password: secret)
+  # end
 
   defp put_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, password: Bcrypt.hash_pwd_salt(password))

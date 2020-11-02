@@ -1,8 +1,8 @@
 defmodule Luta.Guardian do
   use Guardian, otp_app: :luta
 
-  def subject_for_token(user, _claims) do
-    sub = to_string(user.id)
+  def subject_for_token(%{id: id}, _claims) do
+    sub = to_string(id)
     {:ok, sub}
   end
 
@@ -10,8 +10,8 @@ defmodule Luta.Guardian do
     {:error, :reason_for_error}
   end
 
-  def resource_from_claims(claims) do
-    id = claims["sub"]
+  def resource_from_claims(%{"sub" => id}) do
+    # id = claims["sub"]
     resource = Luta.Auth.get_user!(id)
     {:ok,  resource}
   end
