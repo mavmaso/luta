@@ -9,6 +9,11 @@ defmodule LutaWeb.Router do
     pipe_through :api
 
     get "/arena", ArenaController, :index
+
+    post "/sign_up", UserController, :create
+    post "/sign_in", UserController, :sign_in
+
+    # resources "/users", UserController, only: [:show]
   end
 
   # Enables LiveDashboard only for development

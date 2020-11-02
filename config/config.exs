@@ -26,6 +26,11 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
+# Guardian config
+config :luta, Luta.Guardian,
+  issuer: "luta",
+  secret_key: "4gsDn2iJL+IiY/TUJBAh2FrjD+jZQANlKdv+e+WlMHd4kK0hhORMXFG7jeSGOPE9"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
