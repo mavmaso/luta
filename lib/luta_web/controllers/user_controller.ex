@@ -5,22 +5,20 @@ defmodule LutaWeb.UserController do
 
   alias Luta.{Auth, Guardian}
 
-  # action_fallback LutaWeb.FallbackController
+  action_fallback LutaWeb.FallbackController
 
   def create(conn, %{"user" => user_params}) do
     with {:ok, %Auth.User{} = user} <- Auth.create_user(user_params),
          {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
-      # conn |> render("jwt.json", jwt: token)
-      json(conn, %{data: %{jwt: token, user: user}})
+      conn |> put_status(:created) |>json(%{data: %{jwt: token, user: user}})
     end
   end
 
-  def sign_in(conn, %{"email" => email, "password" => password}) do
-    case Auth.token_sign_in(email, password) do
-      {:ok, token, _claims} ->
-        conn |> render("jwt.json", jwt: token)
-      _ ->
-        {:error, :unauthorized}
+  def sign_in(conn, %{"login" => login, "password" => password}) do
+    with {:ok, token, _claims} <- Auth.token_sign_in(login, password) do
+      conn |> json(%{data: %{jwt: token}})
+    else
+      _ -> conn |> json(%{error: "unauthorized"})
     end
   end
 

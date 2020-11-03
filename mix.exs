@@ -46,7 +46,6 @@ defmodule Luta.MixProject do
       {:ex_machina, "~> 2.4", only: :test},
       {:faker, "~> 0.16", only: :test},
       {:observer_cli, "~> 1.6"},
-      {:comeonin, "~> 5.0"},
       {:bcrypt_elixir, "~> 2.0"},
       {:guardian, "~> 2.0"}
     ]

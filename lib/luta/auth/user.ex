@@ -6,7 +6,7 @@ defmodule Luta.Auth.User do
   schema "users" do
     field :login, :string
     field :password, :string
-    field :secret, :string, virtual: true
+    # field :secret, :string, virtual: true
 
     timestamps()
   end

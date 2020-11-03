@@ -3,7 +3,6 @@ defmodule Luta.Auth do
   The Auth context.
   """
 
-  import Comeonin.Bcrypt, only: [checkpw: 2, dummy_checkpw: 0]
   import Ecto.Query, warn: false
 
   alias Luta.Repo
@@ -24,17 +23,17 @@ defmodule Luta.Auth do
   end
 
   defp get_by_login(login) when is_binary(login) do
-    case Repo.get_by(User, login: login) do
+    case Repo.get_by(Luta.Auth.User, login: login) do
       nil ->
-        dummy_checkpw()
-        {:error, "Login error."}
+        Bcrypt.no_user_verify()
+        {:error, "Login error"}
       user ->
         {:ok, user}
     end
   end
 
   defp verify_password(password, %Luta.Auth.User{} = user) when is_binary(password) do
-    if checkpw(password, user.password_hash) do
+    if Bcrypt.verify_pass(password, user.password) do
       {:ok, user}
     else
       {:error, :invalid_password}
