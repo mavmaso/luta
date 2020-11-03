@@ -26,6 +26,9 @@ Luta
 
  WIP
 
+## Docker
+É possível rodar o projeto usando "docker-compose up"
+
 ## Contribuindo
 
 
