@@ -1,14 +1,29 @@
 defmodule LutaWeb.Router do
   use LutaWeb, :router
 
+  alias Luta.Guardian
+
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :jwt_authenticated do
+    plug Guardian.AuthPipeline
   end
 
   scope "/api", LutaWeb do
     pipe_through :api
 
     get "/arena", ArenaController, :index
+    # resources "/users", UserController, only: [:create, :show]
+    post "/sign_up", UserController, :create
+    post "/sign_in", UserController, :sign_in
+  end
+
+  scope "/api", LutaWeb do
+    pipe_through [:api, :jwt_authenticated]
+
+    get "/my_user", UserController, :show
   end
 
   # Enables LiveDashboard only for development
