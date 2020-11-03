@@ -29,9 +29,14 @@ defmodule LutaWeb.UserControllerTest do
       assert jwt =~ "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9"
     end
 
-    # test "can't invalid password, returns 400", %{conn: conn} do
+    test "can't invalid password, returns 400", %{conn: conn} do
+      user = insert(:user)
+      params = %{login: user.login, password: "errado"}
 
-    # end
+      conn = post(conn, Routes.user_path(conn, :sign_in, params))
+
+      assert %{"detail" => "Unauthorized"} = json_response(conn, 401)["errors"]
+    end
 
     # test "can't invalid login, returns 400", %{conn: conn} do
 

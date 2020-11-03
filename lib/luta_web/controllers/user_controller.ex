@@ -10,7 +10,7 @@ defmodule LutaWeb.UserController do
   def create(conn, %{"user" => user_params}) do
     with {:ok, %Auth.User{} = user} <- Auth.create_user(user_params),
          {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
-      conn |> put_status(:created) |>json(%{data: %{jwt: token, user: user}})
+      conn |> put_status(:created) |> json(%{data: %{jwt: token, user: user}})
     end
   end
 
@@ -18,12 +18,14 @@ defmodule LutaWeb.UserController do
     with {:ok, token, _claims} <- Auth.token_sign_in(login, password) do
       conn |> json(%{data: %{jwt: token}})
     else
-      _ -> conn |> json(%{error: "unauthorized"})
+      _ -> {:error, :unauthorized}
+      # _ -> conn |> json(%{error: "unauthorized"})
     end
   end
 
   def show(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
-    json(conn, %{data: %{user: user}})
+    conn |> render("user.json", user: user)
+    # json(conn, %{data: %{user: user}})
   end
 end
