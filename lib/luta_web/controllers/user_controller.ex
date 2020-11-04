@@ -19,13 +19,11 @@ defmodule LutaWeb.UserController do
       conn |> json(%{data: %{jwt: token}})
     else
       _ -> {:error, :unauthorized}
-      # _ -> conn |> json(%{error: "unauthorized"})
     end
   end
 
   def show(conn, _params) do
-    user = Guardian.Plug.current_resource(conn)
+    user = Luta.Guardian.Plug.current_resource(conn)
     conn |> render("user.json", user: user)
-    # json(conn, %{data: %{user: user}})
   end
 end

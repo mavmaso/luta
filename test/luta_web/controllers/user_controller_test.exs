@@ -37,13 +37,19 @@ defmodule LutaWeb.UserControllerTest do
 
       assert %{"detail" => "Unauthorized"} = json_response(conn, 401)["errors"]
     end
-
-    # test "can't invalid login, returns 400", %{conn: conn} do
-
-    # end
   end
 
   describe "show" do
+    test "renders a my user, status :ok", %{conn: conn} do
+      user = insert(:user)
 
+      conn =
+        login(conn, user)
+        |> get(Routes.user_path(conn, :show))
+
+      assert subject = json_response(conn, 200)
+      assert subject["id"] == user.id
+      assert subject["login"] == user.login
+    end
   end
 end
