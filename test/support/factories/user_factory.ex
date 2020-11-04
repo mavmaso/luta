@@ -4,7 +4,7 @@ defmodule Luta.UserFactory do
       def user_factory do
         %Luta.Auth.User{
           login: "login-#{Faker.Lorem.word()}",
-          password: Bcrypt.hash_pwd_salt("123456")
+          password: "$2b$12$iWNYYuxNcQhaUuJ82jLKu..jbrQQl8..it6K5AvdVovOwDmLX2OVu"
         }
       end
     end

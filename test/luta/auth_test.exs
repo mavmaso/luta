@@ -23,7 +23,7 @@ defmodule Luta.AuthTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      params = params_for(:user, %{password: "123456"})
+      params = params_for(:user, %{password: "somepassword"})
 
       assert {:ok, %User{} = user} = Auth.create_user(params)
       assert user.login == params.login

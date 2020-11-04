@@ -9,7 +9,7 @@ defmodule LutaWeb.UserControllerTest do
 
   describe "create" do
     test "w/ user and returns it self and jwt w/ status :ok", %{conn: conn} do
-      params = %{user: %{login: "algo", password: "123456"}}
+      params = %{user: %{login: "algo", password: "somepassword"}}
 
       conn = post(conn, Routes.user_path(conn, :create, params))
 
@@ -22,7 +22,7 @@ defmodule LutaWeb.UserControllerTest do
   describe "sign_in" do
     test "a user, returns status :ok", %{conn: conn} do
       user = insert(:user)
-      params = %{login: user.login, password: "123456"}
+      params = %{login: user.login, password: "somepassword"}
 
       conn = post(conn, Routes.user_path(conn, :sign_in, params))
       jwt = json_response(conn, 200)["data"]["jwt"]
