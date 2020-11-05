@@ -3,7 +3,10 @@ defmodule Luta.ArenaFactory do
     quote do
       def arena_factory do
         %Luta.Battle.Arena{
-          name: "nome-#{Faker.Lorem.word()}"
+          name: "nome-#{Faker.Lorem.word()}",
+          status: "fighting",
+          p1: build(:user),
+          p2: build(:user)
         }
       end
     end

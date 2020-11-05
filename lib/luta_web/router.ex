@@ -24,6 +24,7 @@ defmodule LutaWeb.Router do
     pipe_through [:api, :jwt_auth]
 
     get "/my_user", UserController, :show
+    resources "/arena", ArenaController, only: [:create, :update, :delete]
   end
 
   # Enables LiveDashboard only for development

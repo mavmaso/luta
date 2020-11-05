@@ -17,4 +17,22 @@ defmodule LutaWeb.ArenaControllerTest do
       assert subject["name"] == arena.name
     end
   end
+
+  describe "create" do
+    test "a arena w/ only p1. Returns :ok", %{conn: conn} do
+      p1 = insert(:user)
+      params = %{
+        name: "test",
+        p1_id: p1.id,
+      }
+
+      conn =
+        login(conn, p1)
+        |> post(Routes.arena_path(conn, :create, params))
+
+      assert subject = json_response(conn, 200)["data"]
+      assert subject["p1_id"] == p1.id
+      assert subject["status"] == "pending"
+    end
+  end
 end

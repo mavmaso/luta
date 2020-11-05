@@ -11,4 +11,9 @@ defmodule LutaWeb.ArenaController do
     arenas = Battle.list_arenas()
     json(conn, %{data: arenas})
   end
+
+  def create(conn, params) do
+    {:ok, arena} = Battle.create_arena(params)
+    json(conn, %{data: arena})
+  end
 end
