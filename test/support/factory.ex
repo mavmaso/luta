@@ -3,4 +3,5 @@ defmodule Luta.Factory do
 
   use Luta.ArenaFactory
   use Luta.UserFactory
+  use Luta.FighterFactory
 end
