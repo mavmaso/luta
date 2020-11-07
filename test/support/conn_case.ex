@@ -23,6 +23,7 @@ defmodule LutaWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import LutaWeb.ConnCase
+      import Luta.TestHelpers
 
       alias LutaWeb.Router.Helpers, as: Routes
 

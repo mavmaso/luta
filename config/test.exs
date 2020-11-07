@@ -18,5 +18,7 @@ config :luta, LutaWeb.Endpoint,
   http: [port: 4002],
   server: false
 
+config :bcrypt_elixir, :log_rounds, 2
+
 # Print only warnings and errors during test
 config :logger, level: :warn

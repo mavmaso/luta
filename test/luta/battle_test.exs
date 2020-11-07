@@ -24,10 +24,15 @@ defmodule Luta.BattleTest do
     end
 
     test "create_arena/1 with valid data creates a arena" do
-      params = params_for(:arena)
+      p1 = insert(:user)
+      p2 = insert(:user)
+      params = params_for(:arena, %{p1_id: p1.id, p2_id: p2.id})
 
       assert {:ok, %Arena{} = subject} = Battle.create_arena(params)
       assert subject.name == params.name
+      assert subject.status == params.status
+      assert subject.p1_id == params.p1_id
+      assert subject.p2_id == params.p2_id
     end
 
     test "create_arena/1 with invalid data returns error changeset" do
