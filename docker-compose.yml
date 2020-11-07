@@ -1,6 +1,7 @@
 version: '3'
 services:
-  phoenix:
+  luta_phoenix:
+    container_name: luta_phoenix
     build:
       context: .
     environment:
@@ -8,12 +9,13 @@ services:
       PGPASSWORD: postgres
       PGDATABASE: luta_dev
       PGPORT: 5432
-      PGHOST: db
+      PGHOST: luta_db
     ports:
       - "4000:4000"
     depends_on:
-      - db
-  db:
+      - luta_db
+  luta_db:
+    container_name: luta_db
     image: postgres:13.0
     environment:
       POSTGRES_USER: postgres
