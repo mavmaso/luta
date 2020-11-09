@@ -8,12 +8,12 @@ defmodule LutaWeb.BattleSpecTest do
   end
 
   describe "Battle" do
-    @tag :skip
+    # @tag :skip
     test "commence a fight w/ 2 player", %{conn: conn} do
       user = insert(:user)
       arena = insert(:arena)
-      p1 = %{name: "Red"}
-      action = %{command: "D", card: %{name: "katana", atk: 10}}
+      p1 = %{name: "Red", id: user.id}
+      action = %{card: %{name: "katana", atk: 10}}
       # p2 = %{name: "Green"}
 
       params = %{arena_id: arena.id, player: p1, action: action}

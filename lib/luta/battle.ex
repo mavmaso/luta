@@ -6,8 +6,15 @@ defmodule Luta.Battle do
   import Ecto.Query, warn: false
   alias Luta.Repo
 
-  def battle_turn(%{arena_id: _a_id, player: player, action: action}) do
-    %{scene: [%{msg: "#{player.name} has a #{action.card.name}"}]}
+  def battle_turn(%{arena_id: a_id, player: player, action: action}) do
+    arena = Luta.Battle.get_arena!(a_id).name
+    table = "#{arena}_#{a_id}"
+    battle = :ets.new(String.to_atom(table), [:set])
+
+    :ets.insert(battle, {:p1, %{hp: 100, status: "normal", id: player.id, char: nil}})
+    p1 = :ets.lookup(battle, :p1)
+
+    %{scene: [%{msg: "#{player.name} has a #{action.card.name}"}], p1: p1[:p1]}
   end
 
   alias Luta.Battle.Arena
