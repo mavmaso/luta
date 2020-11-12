@@ -28,6 +28,7 @@ defmodule LutaWeb.Router do
     get "/arena", ArenaController, :index
 
     post "/battle", BattleController, :battle
+    post "start", CombatController, :start
   end
 
   # Enables LiveDashboard only for development

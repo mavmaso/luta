@@ -13,7 +13,7 @@ defmodule Luta.Battle.Arena do
     timestamps()
   end
 
-  @status ~w(pending waiting open fighting closed)
+  @status ~w(pending open waiting fighting closed)
 
   @required ~w(name)a
   @optional ~w(status p1_id p2_id)a
