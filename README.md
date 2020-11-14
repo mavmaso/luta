@@ -19,6 +19,7 @@ Luta
 - Start Phoenix endpoint with `mix phx.server`
 
 ## Database
+ https://dbdiagram.io/d/5f9f89fe3a78976d7b7a12bc
 
  WIP
 

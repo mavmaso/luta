@@ -10,7 +10,11 @@ defmodule LutaWeb.CombatController do
   action_fallback LutaWeb.FallbackController
 
   def start(conn, params) do
-    IO.inspect params
-    json(conn, %{data: "WIP"})
+    with %Battle.Arena{} = arena <- Battle.get_arena!(params["arena_id"]) do
+      #TODO
+      json(conn, %{data: %{arena: arena}})
+    else
+      _ -> {:error, :not_found}
+    end
   end
 end

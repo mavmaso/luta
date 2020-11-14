@@ -7,8 +7,10 @@ defmodule LutaWeb.CombatSpecTest do
 
   setup %{conn: conn} do
     p1 = insert(:user)
+    c1 = insert(:fighter)
     p2 = insert(:user)
-    arena = insert(:arena, %{p1: p1, p2: p2, status: "waiting"})
+    c2 = insert(:fighter)
+  arena = insert(:arena, %{p1: p1, p2: p2, char1: c1, char2: c2, status: "waiting"})
 
     {
       :ok,

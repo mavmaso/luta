@@ -4,10 +4,9 @@ defmodule Luta.FighterFactory do
       def fighter_factory do
         %Luta.Char.Fighter{
           title: "nome-#{Faker.Lorem.word()}",
-          user: build(:user),
           atk: Faker.random_between(0, 10),
           def: Faker.random_between(0, 10),
-          hps: Faker.random_between(0, 10),
+          hps: Faker.random_between(100, 200),
           spd: Faker.random_between(0, 10),
         }
       end

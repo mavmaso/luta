@@ -9,7 +9,7 @@ defmodule Luta.Char.Fighter do
     field :spd, :integer
     field :title, :string
 
-    belongs_to :user, Luta.Auth.User
+    # belongs_to :user, Luta.Auth.User
 
     timestamps()
   end

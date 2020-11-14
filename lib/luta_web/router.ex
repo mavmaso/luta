@@ -27,8 +27,8 @@ defmodule LutaWeb.Router do
     resources "/arena", ArenaController, only: [:create, :update, :delete]
     get "/arena", ArenaController, :index
 
-    post "/battle", BattleController, :battle
-    post "start", CombatController, :start
+    # post "/battle", BattleController, :battle
+    post "/start", CombatController, :start
   end
 
   # Enables LiveDashboard only for development
