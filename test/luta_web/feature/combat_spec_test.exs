@@ -43,6 +43,8 @@ defmodule LutaWeb.CombatSpecTest do
       assert x_p2.char.id == context.c2.id
       assert x_p2.id == context.p2.id
       assert x_p2.status == "normal"
+
+      assert :ets.delete(String.to_atom("arena@#{context.arena.id}"))
     end
 
     test "Can't start when arena is not waiting" do
