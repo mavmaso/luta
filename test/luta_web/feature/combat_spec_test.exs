@@ -29,8 +29,10 @@ defmodule LutaWeb.CombatSpecTest do
         login(context.conn, context.p1)
         |> post(Routes.combat_path(context.conn, :start, params))
 
-      assert json_response(conn, 200) |> IO.inspect
+      assert json_response(conn, 200)
       assert Battle.get_arena!(context.arena.id).status == "fighting"
+      assert [p1: x_p1] = :ets.lookup(String.to_atom("arena@#{context.arena.id}"), :p1)
+      assert [p2: x_p2] = :ets.lookup(String.to_atom("arena@#{context.arena.id}"), :p2)
     end
 
     test "Can't start when arena is not waiting" do
