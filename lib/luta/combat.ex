@@ -19,6 +19,13 @@ defmodule Luta.Combat do
     }})
     # :ets.lookup(combat, :p1) |> IO.inspect
 
+    :ets.insert(combat, {:p2, %{
+      hps: arena.char2.hps,
+      status: "normal",
+      id: arena.p2_id,
+      char: Map.from_struct arena.char2 |> Map.delete(:__meta__)
+    }})
+
     arena
   end
 end

@@ -16,7 +16,9 @@ defmodule LutaWeb.CombatSpecTest do
       :ok,
       conn: put_req_header(conn, "accept", "application/json"),
       p1: p1,
+      c1: c1,
       p2: p2,
+      c2: c2,
       arena: arena
     }
   end
@@ -31,8 +33,16 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert json_response(conn, 200)
       assert Battle.get_arena!(context.arena.id).status == "fighting"
+
       assert [p1: x_p1] = :ets.lookup(String.to_atom("arena@#{context.arena.id}"), :p1)
+      assert x_p1.char.id == context.c1.id
+      assert x_p1.id == context.p1.id
+      assert x_p1.status == "normal"
+
       assert [p2: x_p2] = :ets.lookup(String.to_atom("arena@#{context.arena.id}"), :p2)
+      assert x_p2.char.id == context.c2.id
+      assert x_p2.id == context.p2.id
+      assert x_p2.status == "normal"
     end
 
     test "Can't start when arena is not waiting" do
