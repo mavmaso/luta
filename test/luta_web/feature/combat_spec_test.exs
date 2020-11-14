@@ -10,15 +10,13 @@ defmodule LutaWeb.CombatSpecTest do
     c1 = insert(:fighter)
     p2 = insert(:user)
     c2 = insert(:fighter)
-  arena = insert(:arena, %{p1: p1, p2: p2, char1: c1, char2: c2, status: "waiting"})
+    arena = insert(:arena, %{p1: p1, p2: p2, char1: c1, char2: c2, status: "waiting"})
 
     {
       :ok,
       conn: put_req_header(conn, "accept", "application/json"),
-      p1: p1,
-      c1: c1,
-      p2: p2,
-      c2: c2,
+      p1: p1, c1: c1,
+      p2: p2, c2: c2,
       arena: arena
     }
   end
@@ -47,8 +45,15 @@ defmodule LutaWeb.CombatSpecTest do
       assert :ets.delete(String.to_atom("arena@#{context.arena.id}"))
     end
 
-    test "Can't start when arena is not waiting" do
+    test "Can't start when arena is not waiting", context do
+      arena = insert(:arena, %{status: "pending"})
+      params = %{arena_id: arena.id}
 
+      conn =
+        login(context.conn, context.p1)
+        |> post(Routes.combat_path(context.conn, :start, params))
+
+      assert json_response(conn, 404)
     end
   end
 
