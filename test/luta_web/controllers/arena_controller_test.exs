@@ -35,4 +35,20 @@ defmodule LutaWeb.ArenaControllerTest do
       assert subject["status"] == "pending"
     end
   end
+
+  describe "select_char" do
+    test "p2 entry in a arena. Returns :ok", %{conn: conn} do
+      p2 = insert(:user)
+      char2 = insert(:fighter)
+      arena = insert(:arena, %{p2: nil, char2: nil})
+      params = %{char2_id: char2.id}
+
+      conn =
+        login(conn, p2)
+        |> put(Routes.arena_path(conn, :select_char, id: arena.id), params)
+
+        IO.inspect json_response(conn, 200)
+      assert %{"arena" => x_arena} = json_response(conn, 200)["data"]
+    end
+  end
 end

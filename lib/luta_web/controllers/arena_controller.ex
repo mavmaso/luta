@@ -3,7 +3,9 @@ defmodule LutaWeb.ArenaController do
 
   use LutaWeb, :controller
 
-  alias Luta.Battle
+  import Utils
+
+  alias Luta.{Battle, Auth, Char}
 
   action_fallback LutaWeb.FallbackController
 
@@ -15,5 +17,17 @@ defmodule LutaWeb.ArenaController do
   def create(conn, params) do
     {:ok, arena} = Battle.create_arena(params)
     json(conn, %{data: arena})
+  end
+
+  def select_char(conn, params) do
+    with %Auth.User{} =  player <- get_current_user(conn),
+      %Battle.Arena{} = arena <- Battle.get_arena!(params["id"]),
+      %Char.Fighter{} = char <- Char.get_fighter!(params["char2_id"]) do
+      [player, arena, char]
+
+      json(conn, %{data: "WIP"})
+    else
+      _ -> {:error, :not_yet}
+    end
   end
 end

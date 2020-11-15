@@ -24,8 +24,10 @@ defmodule LutaWeb.Router do
     pipe_through [:api, :jwt_auth]
 
     get "/my_user", UserController, :show
-    resources "/arena", ArenaController, only: [:create, :update, :delete]
+
+    resources "/arena", ArenaController, only: [:create, :delete]
     get "/arena", ArenaController, :index
+    put "/select_char", ArenaController, :select_char
 
     # post "/battle", BattleController, :battle
     post "/start", CombatController, :start
