@@ -37,18 +37,18 @@ defmodule LutaWeb.ArenaControllerTest do
   end
 
   describe "select_char" do
-    test "p2 entry in a arena. Returns :ok", %{conn: conn} do
+    test "p2 entry in a arena with a fighter. Returns :ok", %{conn: conn} do
       p2 = insert(:user)
       char2 = insert(:fighter)
-      arena = insert(:arena, %{p2: nil, char2: nil})
+      arena = insert(:arena, %{p2: p2, char2: nil})
       params = %{char2_id: char2.id}
 
       conn =
         login(conn, p2)
         |> put(Routes.arena_path(conn, :select_char, id: arena.id), params)
 
-        IO.inspect json_response(conn, 200)
       assert %{"arena" => x_arena} = json_response(conn, 200)["data"]
+      assert x_arena["char2_id"] == params.char2_id
     end
   end
 end

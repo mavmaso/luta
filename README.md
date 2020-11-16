@@ -33,3 +33,4 @@ Luta
 ### Principais contribuidores
  - [mavmaso](https://github.com/mavmaso)
  - [dominonivictor](https://github.com/dominonivictor)
+ - [angelorange](https://github.com/angelorange)
