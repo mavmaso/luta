@@ -104,7 +104,15 @@ defmodule Luta.Battle do
   def check_arena(%Arena{} = arena, status) do
     case arena.status == status do
       true -> {:ok, status}
-      _ -> {:error, :not_yet}
+      _ -> {:error, :not_ready}
+    end
+  end
+
+  def check_player(arena_id, user_id) do
+    case get_arena!(arena_id) do
+      %Arena{p1_id: ^user_id} -> {:ok, :p1}
+      %Arena{p2_id: ^user_id} -> {:ok, :p2}
+      _ -> {:error, :player_not_found}
     end
   end
 end

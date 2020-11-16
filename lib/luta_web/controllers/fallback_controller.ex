@@ -28,6 +28,13 @@ defmodule LutaWeb.FallbackController do
     |> render(:"401")
   end
 
+  def call(conn, {:error, msg}) when is_atom(msg) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(LutaWeb.ErrorView)
+    |> render("custom_error.json", %{msg: msg})
+  end
+
   def call(conn, {:error, _}) do
     conn
     |> put_status(:bad_request)
