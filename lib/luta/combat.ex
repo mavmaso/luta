@@ -36,24 +36,29 @@ defmodule Luta.Combat do
       queue = String.to_atom("queue_#{key}")
       q_map = :ets.lookup(combat, queue)[queue]
 
-      case check_queue(q_map, combat, queue,action) do
-        {:ok, new_queue} -> {:ok, new_queue}
-        _ ->  {:error, :cant_insert}
-      end
+      check_queue(q_map, action) |> add_to_queue(combat, queue)
     end
   end
 
-  defp check_queue(q_map, combat, queue, action) do
+  defp check_queue(q_map, action) do
     total_size = q_map.size + String.to_integer(action.size)
     case total_size <= 5 do
-      true ->
-        new_map =
-          Map.put(q_map, :list, q_map.list ++ [action])
-          |> Map.put(:size, total_size)
-        :ets.insert(combat, {queue, new_map})
-        {:ok, new_map}
-      _ ->
-        {:error}
+      true -> build_q_map(q_map, action, total_size)
+      _ -> {:error}
     end
+  end
+
+  defp build_q_map(q_map, action, total_size) do
+    Map.put(q_map, :list, q_map.list ++ [action])
+    |> Map.put(:size, total_size)
+  end
+
+  defp add_to_queue({:error}, _, _) do
+    {:error, :cant_insert}
+  end
+
+  defp add_to_queue(new_map, combat, queue) do
+    :ets.insert(combat, {queue, new_map})
+    {:ok, new_map}
   end
 end

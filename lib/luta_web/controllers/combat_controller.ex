@@ -22,8 +22,8 @@ defmodule LutaWeb.CombatController do
     args = Utils.atomify_map(params)
     with %Battle.Arena{} = arena <- Battle.get_arena!(args.arena_id),
       {:ok, _} <- Battle.check_arena(arena, "fighting") do
-
       current_user = Plug.current_resource(conn)
+
       case Combat.actions(arena.id, current_user.id, args.action) do
         {:ok, new_queue} -> json(conn, %{data: %{queue: new_queue}})
         _ -> {:error, :cant_insert}
