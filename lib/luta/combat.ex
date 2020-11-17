@@ -17,7 +17,7 @@ defmodule Luta.Combat do
       id: arena.p1_id,
       char: Map.from_struct arena.char1 |> Map.delete(:__meta__)
     }})
-    :ets.insert(combat, {:queue_p1, %{list: [], size: 0}})
+    :ets.insert(combat, {:buffer_p1, %{list: [], size: 0}})
 
     :ets.insert(combat, {:p2, %{
       hps: arena.char2.hps,
@@ -25,7 +25,7 @@ defmodule Luta.Combat do
       id: arena.p2_id,
       char: Map.from_struct arena.char2 |> Map.delete(:__meta__)
     }})
-    :ets.insert(combat, {:queue_p2, %{list: [], size: 0}})
+    :ets.insert(combat, {:buffer_p2, %{list: [], size: 0}})
 
     arena
   end
@@ -33,15 +33,15 @@ defmodule Luta.Combat do
   def actions(arena_id, user_id, action) do
     with {:ok, key} <- Battle.check_player(arena_id, user_id) do
       combat = String.to_atom("arena@#{arena_id}")
-      queue = String.to_atom("queue_#{key}")
-      q_map = :ets.lookup(combat, queue)[queue]
+      buffer = String.to_atom("buffer_#{key}")
+      q_map = :ets.lookup(combat, buffer)[buffer]
 
-      check_queue(q_map, action) |> add_to_queue(combat, queue)
+      check_buffer(q_map, action) |> add_to_buffer(combat, buffer)
     end
   end
 
-  defp check_queue(q_map, action) do
-    total_size = q_map.size + String.to_integer(action.size)
+  defp check_buffer(q_map, action) do
+    total_size = q_map.size + action.size
     case total_size <= 5 do
       true -> build_q_map(q_map, action, total_size)
       _ -> {:error}
@@ -53,12 +53,12 @@ defmodule Luta.Combat do
     |> Map.put(:size, total_size)
   end
 
-  defp add_to_queue({:error}, _, _) do
+  defp add_to_buffer({:error}, _, _) do
     {:error, :cant_insert}
   end
 
-  defp add_to_queue(new_map, combat, queue) do
-    :ets.insert(combat, {queue, new_map})
+  defp add_to_buffer(new_map, combat, buffer) do
+    :ets.insert(combat, {buffer, new_map})
     {:ok, new_map}
   end
 end

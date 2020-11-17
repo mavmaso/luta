@@ -61,23 +61,24 @@ defmodule LutaWeb.CombatSpecTest do
   describe "actions" do
     test "p1 send two separed actions. Returns :ok", context do
       arena = Luta.Combat.start(context.arena)
-      action = %{size: 1, description: "soco", power: 1, special: nil}
-      params = %{arena_id: arena.id, action: action}
+      # action = %{size: 1, description: "soco", power: 1, special: nil}
+      action = insert(:move_set)
+      params = %{arena_id: arena.id, action_id: action.id}
 
       conn =
         login(context.conn, context.p1)
         |> post(Routes.combat_path(context.conn, :actions, params))
 
-      assert %{"list" => [x_first], "size" => _} = json_response(conn, 200)["data"]["queue"]
+      assert %{"list" => [x_first], "size" => _} = json_response(conn, 200)["data"]["buffer"]
 
-      action_two = %{size: 2, description: "katanada pesada", power: 5, special: nil}
-      params_two = %{arena_id: arena.id, action: action_two}
+      action_two = insert(:move_set, %{size: 3})
+      params_two = %{arena_id: arena.id, action_id: action_two.id}
 
       conn =
         login(context.conn, context.p1)
         |> post(Routes.combat_path(context.conn, :actions, params_two))
 
-      assert subject = json_response(conn, 200)["data"]["queue"]
+      assert subject = json_response(conn, 200)["data"]["buffer"]
       assert subject["size"] == action.size + action_two.size
       assert [^x_first, x_secound] = subject["list"]
     end
@@ -87,7 +88,7 @@ defmodule LutaWeb.CombatSpecTest do
 
   end
 
-  describe "queue" do
+  describe "buffer" do
 
   end
 

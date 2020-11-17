@@ -3,9 +3,8 @@ defmodule LutaWeb.CombatController do
 
   use LutaWeb, :controller
 
-  alias Luta.Battle
   alias Utils
-  alias Luta.Combat
+  alias Luta.{Battle, Combat, Cards}
   alias Luta.Guardian.Plug
 
   action_fallback LutaWeb.FallbackController
@@ -21,11 +20,12 @@ defmodule LutaWeb.CombatController do
   def actions(conn, params) do
     args = Utils.atomify_map(params)
     with %Battle.Arena{} = arena <- Battle.get_arena!(args.arena_id),
-      {:ok, _} <- Battle.check_arena(arena, "fighting") do
+      {:ok, _} <- Battle.check_arena(arena, "fighting"),
+      %Cards.MoveSet{} = action <- Cards.get_move_set!(args.action_id) do
       current_user = Plug.current_resource(conn)
 
-      case Combat.actions(arena.id, current_user.id, args.action) do
-        {:ok, new_queue} -> json(conn, %{data: %{queue: new_queue}})
+      case Combat.actions(arena.id, current_user.id, action) do
+        {:ok, new_buffer} -> json(conn, %{data: %{buffer: new_buffer}})
         _ -> {:error, :cant_insert}
       end
     end
