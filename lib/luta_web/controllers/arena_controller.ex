@@ -34,4 +34,22 @@ defmodule LutaWeb.ArenaController do
       end
     end
   end
+
+  def select_char(conn, %{"char1_id" => _} = params) do
+    with  %Auth.User{} = player <- get_current_user(conn),
+    %Battle.Arena{} = arena <- Battle.get_arena!(params["id"]),
+    %Char.Fighter{} = char <- Char.get_fighter!(params["char1_id"]) do
+
+      case player.id == arena.p1_id do
+        true ->
+
+          {:ok, new_arena} = Battle.update_arena(arena, %{char1_id: char.id})
+          json(conn, %{data: %{arena: new_arena}})
+        false ->
+          {:error, :unauthorized}
+      end
+
+    end
+
+  end
 end

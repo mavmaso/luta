@@ -47,6 +47,8 @@ defmodule LutaWeb.ArenaControllerTest do
         login(conn, p2)
         |> put(Routes.arena_path(conn, :select_char, id: arena.id), params)
 
+      conn |> IO.inspect
+
       assert %{"arena" => x_arena} = json_response(conn, 200)["data"]
       assert x_arena["char2_id"] == params.char2_id
     end
