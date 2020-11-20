@@ -25,6 +25,13 @@ defmodule LutaWeb.ArenaController do
     json(conn, %{data: %{arena: arena}})
   end
 
+  def delete(conn, params) do
+    with arena <- Battle.get_arena!(params["id"]),
+    {:ok, _} <- Battle.delete_arena(arena) do
+      json(conn, %{data: "successfull deleted"})
+    end
+  end
+
   def select_char(conn, %{"char2_id" => _} = params) do
     with %Auth.User{} =  player <- get_current_user(conn),
       %Battle.Arena{} = arena <- Battle.get_arena!(params["id"]),

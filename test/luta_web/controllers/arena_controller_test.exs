@@ -50,6 +50,20 @@ defmodule LutaWeb.ArenaControllerTest do
     end
   end
 
+  describe "delete" do
+    test "a arena. Returns :ok", %{conn: conn} do
+      p1 = insert(:user)
+      arena = insert(:arena)
+
+      conn =
+        login(conn, p1)
+        |> delete(Routes.arena_path(conn, :delete, arena.id))
+
+      assert json_response(conn, 200)
+      assert_raise Ecto.NoResultsError, fn -> Luta.Battle.get_arena!(arena.id) end
+    end
+  end
+
   describe "select_char" do
     test "p2 entry in a arena with a fighter. Returns :ok", %{conn: conn} do
       p2 = insert(:user)
