@@ -2,7 +2,7 @@ defmodule Luta.Auth.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:login]}
+  @derive {Jason.Encoder, only: [:id, :login]}
   schema "users" do
     field :login, :string
     field :password, :string

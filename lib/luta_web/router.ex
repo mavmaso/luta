@@ -25,8 +25,7 @@ defmodule LutaWeb.Router do
 
     get "/my_user", UserController, :show
 
-    resources "/arena", ArenaController, only: [:create, :delete]
-    get "/arena", ArenaController, :index
+    resources "/arena", ArenaController, only: [:create, :delete, :show]
     put "/select_char", ArenaController, :select_char
 
     # post "/battle", BattleController, :battle

@@ -2,7 +2,7 @@ defmodule Luta.Battle.Arena do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @derive {Jason.Encoder, only: [:name, :p1_id, :char1_id, :p2_id, :char2_id, :status]}
+  @derive {Jason.Encoder, only: [:id, :name, :p1_id, :char1_id, :p2_id, :char2_id, :status]}
   schema "arenas" do
     field :name, :string
     field :status, :string, default: "pending"
