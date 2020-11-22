@@ -15,6 +15,7 @@ defmodule LutaWeb.Router do
     pipe_through :api
 
     get "/arenas", ArenaController, :index
+    get "/arena", ArenaController, :show
 
     post "/sign_up", UserController, :create
     post "/sign_in", UserController, :sign_in
@@ -25,10 +26,10 @@ defmodule LutaWeb.Router do
 
     get "/my_user", UserController, :show
 
-    resources "/arena", ArenaController, only: [:create, :delete, :show]
+    resources "/arena", ArenaController, only: [:create, :delete]
     put "/select_char", ArenaController, :select_char
+    put "/join_arena", ArenaController, :join_arena
 
-    # post "/battle", BattleController, :battle
     post "/start", CombatController, :start
   end
 

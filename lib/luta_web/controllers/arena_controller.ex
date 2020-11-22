@@ -15,13 +15,13 @@ defmodule LutaWeb.ArenaController do
   end
 
   def create(conn, params) do
-    {
-    :ok, arena} = Battle.create_arena(params)
-    json(conn, %{data: arena})
+    args = params |> Map.merge(%{"p1_id" => get_current_user(conn).id, "status" => "open"})
+    {:ok, arena} = Battle.create_arena(args)
+    put_status(conn, :created) |> json(%{data: %{arena: arena}})
   end
 
   def show(conn, params) do
-    arena = Battle.get_arena!(params["id"])
+    arena = Battle.get_arena!(params["arena_id"])
     json(conn, %{data: %{arena: arena}})
   end
 
@@ -64,4 +64,13 @@ defmodule LutaWeb.ArenaController do
     end
 
   end
+
+  def join_arena(conn, params) do
+    with %Battle.Arena{status: "open"} = arena <- Battle.get_arena!(params["arena_id"]),
+      %Auth.User{} = player <- get_current_user(conn) do
+
+        {:ok, new_arena} = Battle.update_arena(arena, %{p2_id: player.id})
+        json(conn, %{data: %{arena: new_arena}})
+      end
+    end
 end
