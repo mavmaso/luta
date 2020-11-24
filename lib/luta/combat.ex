@@ -5,6 +5,9 @@ defmodule Luta.Combat do
 
   alias Luta.Battle
 
+  @doc """
+  WIP
+  """
   def start(%Battle.Arena{} = arena) do
     {:ok, arena} = Battle.update_arena(arena, %{status: "fighting"})
     arena = Luta.Repo.preload(arena, [:char1, :char2])
@@ -30,6 +33,9 @@ defmodule Luta.Combat do
     arena
   end
 
+  @doc """
+  WIP
+  """
   def actions(arena_id, user_id, action) do
     with {:ok, key} <- Battle.check_player(arena_id, user_id) do
       combat = String.to_atom("arena@#{arena_id}")
