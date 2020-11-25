@@ -97,7 +97,18 @@ defmodule LutaWeb.CombatSpecTest do
   end
 
   describe "forfeit" do
+    test "a battle w/2 players. Returns :ok", context do
+      arena = Luta.Combat.start(context.arena)
+      params = %{arena_id: arena.id}
 
+      conn =
+        login(context.conn, context.p1)
+        |> post(Routes.combat_path(context.conn, :forfeit, params))
+
+      assert %{"arena" => arena} = json_response(conn, 200)["data"]
+      assert arena["status"] == "closed"
+      assert false == :ets.delete(String.to_atom("arena@#{arena.id}"))
+    end
   end
 
   describe "close" do

@@ -14,6 +14,7 @@ defmodule LutaWeb.FallbackController do
     |> render("error.json", changeset: changeset)
   end
 
+  # This clause is an example of how to handle resources that cannot be found.
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
@@ -26,13 +27,6 @@ defmodule LutaWeb.FallbackController do
     |> put_status(:unauthorized)
     |> put_view(LutaWeb.ErrorView)
     |> render(:"401")
-  end
-
-  def call(conn, {:error, msg}) when is_atom(msg) do
-    conn
-    |> put_status(:bad_request)
-    |> put_view(LutaWeb.ErrorView)
-    |> render("custom_error.json", %{msg: msg})
   end
 
   def call(conn, {:error, _}) do

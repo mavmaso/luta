@@ -33,6 +33,7 @@ defmodule LutaWeb.Router do
 
     post "/start", CombatController, :start
     post "/actions", CombatController, :actions
+    post "/ff", CombatController, :forfeit
   end
 
   # Enables LiveDashboard only for development

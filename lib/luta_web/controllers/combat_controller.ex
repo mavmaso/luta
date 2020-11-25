@@ -30,4 +30,8 @@ defmodule LutaWeb.CombatController do
       end
     end
   end
+
+  def forfeit(conn, params) do
+
+  end
 end
