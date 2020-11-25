@@ -61,7 +61,6 @@ defmodule LutaWeb.CombatSpecTest do
   describe "actions" do
     test "p1 send two separed actions. Returns :ok", context do
       arena = Luta.Combat.start(context.arena)
-      # action = %{size: 1, description: "soco", power: 1, special: nil}
       action = insert(:move_set)
       params = %{arena_id: arena.id, action_id: action.id}
 
@@ -85,7 +84,17 @@ defmodule LutaWeb.CombatSpecTest do
   end
 
   describe "sync" do
+    test "p1 request info about combat. Returns :ok", context do
+      arena = Luta.Combat.start(context.arena)
+      params = %{arena_id: arena.id}
 
+      conn =
+        login(context.conn, context.p1)
+        |> post(Routes.combat_path(context.conn, :sync, params))
+
+      assert subject = json_response(conn, 200)["data"] |> IO.inspect
+      assert subject["arena"]["id"] == arena.id
+    end
   end
 
   describe "buffer" do

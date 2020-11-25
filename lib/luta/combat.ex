@@ -40,22 +40,22 @@ defmodule Luta.Combat do
     with {:ok, key} <- Battle.check_player(arena_id, user_id) do
       combat = String.to_atom("arena@#{arena_id}")
       buffer = String.to_atom("buffer_#{key}")
-      q_map = :ets.lookup(combat, buffer)[buffer]
+      b_map = :ets.lookup(combat, buffer)[buffer]
 
-      check_buffer(q_map, action) |> add_to_buffer(combat, buffer)
+      check_buffer(b_map, action) |> add_to_buffer(combat, buffer)
     end
   end
 
-  defp check_buffer(q_map, action) do
-    total_size = q_map.size + action.size
+  defp check_buffer(b_map, action) do
+    total_size = b_map.size + action.size
     case total_size <= 5 do
-      true -> build_q_map(q_map, action, total_size)
+      true -> build_b_map(b_map, action, total_size)
       _ -> {:error}
     end
   end
 
-  defp build_q_map(q_map, action, total_size) do
-    Map.put(q_map, :list, q_map.list ++ [action])
+  defp build_b_map(b_map, action, total_size) do
+    Map.put(b_map, :list, b_map.list ++ [action])
     |> Map.put(:size, total_size)
   end
 
@@ -66,5 +66,22 @@ defmodule Luta.Combat do
   defp add_to_buffer(new_map, combat, buffer) do
     :ets.insert(combat, {buffer, new_map})
     {:ok, new_map}
+  end
+
+  @doc """
+  WIP
+  """
+  def sync(arena_id, user_id) do
+    combat = String.to_atom("arena@#{arena_id}")
+    _p1 = :ets.lookup(combat, :p1)[:p1] |> IO.inspect
+    _p2 = :ets.lookup(combat, :p2)[:p2] |> IO.inspect
+
+    case Battle.check_player(arena_id, user_id) do
+      {:ok, key} ->
+        buffer = String.to_atom("buffer_#{key}")
+        _b_map = :ets.lookup(combat, buffer)[buffer] |> IO.inspect
+      {_, :player_not_found} ->
+        "algo"
+    end
   end
 end
