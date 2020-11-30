@@ -11,7 +11,7 @@ defmodule LutaWeb.CombatController do
 
   def start(conn, params) do
     with %Battle.Arena{} = arena <- Battle.get_arena!(params["arena_id"]),
-     {:ok, _} <- Battle.check_arena(arena, "waiting") do
+     {:ok, _} <- Battle.check_arena!(arena, "waiting") do
       arena = Combat.start(arena)
       json(conn, %{data: %{arena: arena}})
     end
@@ -20,7 +20,7 @@ defmodule LutaWeb.CombatController do
   def actions(conn, params) do
     args = Utils.atomify_map(params)
     with %Battle.Arena{} = arena <- Battle.get_arena!(args.arena_id),
-      {:ok, _} <- Battle.check_arena(arena, "fighting"),
+      {:ok, _} <- Battle.check_arena!(arena, "fighting"),
       %Cards.MoveSet{} = action <- Cards.get_move_set!(args.action_id) do
       current_user = Plug.current_resource(conn)
 
@@ -33,10 +33,11 @@ defmodule LutaWeb.CombatController do
 
   def sync(conn, params) do
     args = Utils.atomify_map(params)
-    current_user = Plug.current_resource(conn)
+    # current_user = Plug.current_resource(conn)
     with %Battle.Arena{} = arena <- Battle.get_arena!(args.arena_id) do
-      _info = Combat.sync(arena.id, current_user.id)
-      json(conn, %{data: %{arena: arena, info: "WIP"}})
+      info = Combat.sync(arena.id)
+
+      json(conn, %{data: %{arena: arena, info: info}})
     end
   end
 end

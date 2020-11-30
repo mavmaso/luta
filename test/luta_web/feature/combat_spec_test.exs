@@ -92,8 +92,16 @@ defmodule LutaWeb.CombatSpecTest do
         login(context.conn, context.p1)
         |> post(Routes.combat_path(context.conn, :sync, params))
 
-      assert subject = json_response(conn, 200)["data"] |> IO.inspect
+      assert subject = json_response(conn, 200)["data"]
       assert subject["arena"]["id"] == arena.id
+      assert subject["arena"]["status"] == arena.status
+      # assert subject["info"]["scena"] == 1
+
+      assert subject["info"]["p1"]["char"]["hps"] |> is_integer()
+      assert subject["info"]["buffer_1"] == 0
+
+      assert subject["info"]["p2"]["char"]["hps"] |> is_integer()
+      assert subject["info"]["buffer_2"] == 0
     end
   end
 

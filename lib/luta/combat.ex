@@ -37,7 +37,7 @@ defmodule Luta.Combat do
   WIP
   """
   def actions(arena_id, user_id, action) do
-    with {:ok, key} <- Battle.check_player(arena_id, user_id) do
+    with {:ok, key} <- Battle.check_player!(arena_id, user_id) do
       combat = String.to_atom("arena@#{arena_id}")
       buffer = String.to_atom("buffer_#{key}")
       b_map = :ets.lookup(combat, buffer)[buffer]
@@ -71,17 +71,17 @@ defmodule Luta.Combat do
   @doc """
   WIP
   """
-  def sync(arena_id, user_id) do
+  def sync(arena_id) do
     combat = String.to_atom("arena@#{arena_id}")
-    _p1 = :ets.lookup(combat, :p1)[:p1] |> IO.inspect
-    _p2 = :ets.lookup(combat, :p2)[:p2] |> IO.inspect
 
-    case Battle.check_player(arena_id, user_id) do
-      {:ok, key} ->
-        buffer = String.to_atom("buffer_#{key}")
-        _b_map = :ets.lookup(combat, buffer)[buffer] |> IO.inspect
-      {_, :player_not_found} ->
-        "algo"
-    end
+    p1 = :ets.lookup(combat, :p1)[:p1]
+    buffer_p1 = String.to_atom("buffer_#{:p1}")
+    b_map_p1 = :ets.lookup(combat, buffer_p1)[buffer_p1].size
+
+    p2 = :ets.lookup(combat, :p2)[:p2]
+    buffer_p2 = String.to_atom("buffer_#{:p2}")
+    b_map_p2 = :ets.lookup(combat, buffer_p2)[buffer_p2].size
+
+    %{p1: p1, buffer_1: b_map_p1, p2: p2, buffer_2: b_map_p2}
   end
 end

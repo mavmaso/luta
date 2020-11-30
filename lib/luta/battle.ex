@@ -101,18 +101,25 @@ defmodule Luta.Battle do
     Arena.changeset(arena, attrs)
   end
 
-  def check_arena(%Arena{} = arena, status) do
+  def check_arena!(%Arena{} = arena, status) do
     case arena.status == status do
       true -> {:ok, status}
       _ -> {:error, :not_ready}
     end
   end
 
-  def check_player(arena_id, user_id) do
+  def check_player!(arena_id, user_id) do
     case get_arena!(arena_id) do
       %Arena{p1_id: ^user_id} -> {:ok, :p1}
       %Arena{p2_id: ^user_id} -> {:ok, :p2}
       _ -> {:error, :player_not_found}
     end
   end
+
+  # def check_viewer!(arena_id, user_id) do
+  #   case check_player!(arena_id, user_id) do
+  #     {:error, _} -> {:ok, :viewer}
+  #     {:ok, player} -> {:error, player}
+  #   end
+  # end
 end
