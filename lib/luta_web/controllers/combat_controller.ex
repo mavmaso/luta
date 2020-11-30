@@ -32,6 +32,7 @@ defmodule LutaWeb.CombatController do
   end
 
   def forfeit(conn, params) do
-
+    [params]
+    json(conn, %{data: "WIP"})
   end
 end

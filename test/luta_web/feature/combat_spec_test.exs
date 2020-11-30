@@ -46,7 +46,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert :ets.delete(String.to_atom("arena@#{context.arena.id}"))
     end
 
-    test "Can't when arena is not waiting. Returns :error", context do
+    test "Can't when arena is not waiting. Returns :errors", context do
       arena = insert(:arena, %{status: "pending"})
       params = %{arena_id: arena.id}
 
@@ -54,7 +54,7 @@ defmodule LutaWeb.CombatSpecTest do
         login(context.conn, context.p1)
         |> post(Routes.combat_path(context.conn, :start, params))
 
-      assert %{"message" => "not_ready"} = json_response(conn, 400)["error"]
+      assert %{"detail" => "Bad Request"} = json_response(conn, 400)["errors"]
     end
   end
 
