@@ -102,6 +102,8 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert subject["info"]["p2"]["char"]["hps"] |> is_integer()
       assert subject["info"]["buffer_2"] == 0
+
+      assert :ets.delete(String.to_atom("arena@#{arena.id}"))
     end
   end
 
@@ -114,7 +116,19 @@ defmodule LutaWeb.CombatSpecTest do
   end
 
   describe "forfeit" do
+    @tag :skip
+    test "a battle w/2 players. Returns :ok", context do
+      arena = Luta.Combat.start(context.arena)
+      params = %{arena_id: arena.id}
 
+      conn =
+        login(context.conn, context.p1)
+        |> post(Routes.combat_path(context.conn, :forfeit, params))
+
+      assert %{"arena" => arena} = json_response(conn, 200)["data"]
+      assert arena["status"] == "closed"
+      assert false == :ets.delete(String.to_atom("arena@#{arena.id}"))
+    end
   end
 
   describe "close" do
