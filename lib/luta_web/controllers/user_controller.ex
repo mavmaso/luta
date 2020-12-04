@@ -14,7 +14,7 @@ defmodule LutaWeb.UserController do
     end
   end
 
-  def sign_in(conn, %{"login" => login, "password" => password}) do
+  def login(conn, %{"login" => login, "password" => password}) do
     with {:ok, token, _claims} <- Auth.token_sign_in(login, password) do
       conn |> json(%{data: %{jwt: token}})
     else

@@ -7,7 +7,7 @@ defmodule LutaWeb.UserControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "create" do
+  describe "sign_up" do
     test "w/ user and returns it self and jwt w/ status :ok", %{conn: conn} do
       params = %{user: %{login: "algo", password: "somepassword"}}
 
@@ -19,12 +19,12 @@ defmodule LutaWeb.UserControllerTest do
     end
   end
 
-  describe "sign_in" do
+  describe "login" do
     test "a user, returns status :ok", %{conn: conn} do
       user = insert(:user)
       params = %{login: user.login, password: "somepassword"}
 
-      conn = post(conn, Routes.user_path(conn, :sign_in, params))
+      conn = post(conn, Routes.user_path(conn, :login, params))
       jwt = json_response(conn, 200)["data"]["jwt"]
       assert jwt =~ "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9"
     end
@@ -33,7 +33,7 @@ defmodule LutaWeb.UserControllerTest do
       user = insert(:user)
       params = %{login: user.login, password: "errado"}
 
-      conn = post(conn, Routes.user_path(conn, :sign_in, params))
+      conn = post(conn, Routes.user_path(conn, :login, params))
 
       assert %{"detail" => "Unauthorized"} = json_response(conn, 401)["errors"]
     end

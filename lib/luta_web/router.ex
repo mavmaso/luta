@@ -18,7 +18,7 @@ defmodule LutaWeb.Router do
     get "/arena", ArenaController, :show
 
     post "/sign_up", UserController, :create
-    post "/sign_in", UserController, :sign_in
+    post "/login", UserController, :login
   end
 
   scope "/api/v1", LutaWeb do
