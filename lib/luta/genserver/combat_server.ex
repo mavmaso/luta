@@ -5,12 +5,13 @@ defmodule Luta.CombatServer do
 
   # API
 
-  def start_link() do
-    GenServer.start_link(__MODULE__, %{})
+  def start_link(arena_id) do
+    GenServer.start_link(__MODULE__, arena_id)
   end
 
-  def init(state) do
-    # action_turn(arena)
+  def init(arena_id) do
+    state = [arena_id]
+    action_turn(arena_id)
     {:ok, state}
   end
 
@@ -25,7 +26,7 @@ defmodule Luta.CombatServer do
   # Callback
 
   def handle_cast({:start, arena_id}, state) do
-    IO.puts "Foi ..."
+    # IO.puts "Foi ..."
     action_turn(arena_id)
     {:noreply, state}
   end
@@ -35,7 +36,7 @@ defmodule Luta.CombatServer do
   end
 
   def handle_info({:turn, arena_id}, state) do
-    IO.puts "Important stuff in progress..."
+    # IO.puts "Important stuff in progress..."
     action_turn(arena_id)
     {:noreply, state}
   end
@@ -45,9 +46,10 @@ defmodule Luta.CombatServer do
 
     case arena.status do
       "closed" ->
-        IO.puts "para !!!!!!"
-      "fighting" ->
-        IO.puts "loopppppp"
+        # IO.puts "para !!!!!!"
+        :ok
+      _ ->
+        # IO.puts "loopppppp"
         Process.send_after(self(), {:turn, arena_id}, 10_000)
     end
   end

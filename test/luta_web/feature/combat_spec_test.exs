@@ -79,7 +79,7 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert subject = json_response(conn, 200)["data"]["buffer"]
       assert subject["size"] == action.size + action_two.size
-      assert [^x_first, x_secound] = subject["list"]
+      assert [^x_first, _x_secound] = subject["list"]
     end
   end
 
