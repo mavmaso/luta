@@ -1,48 +1,43 @@
 defmodule Luta.CombatServer do
   use GenServer
 
-  # alias Luta.Battle.Arena
-
   # API
 
-  def start_link(arena_id) do
-    GenServer.start_link(__MODULE__, arena_id)
-  end
+  def start_link(arena_id), do: GenServer.start_link(__MODULE__, arena_id)
 
   def init(arena_id) do
-    state = [arena_id]
     action_turn(arena_id)
-    {:ok, state}
+
+    {:ok, arena_id}
   end
 
-  def fight(pid, arena_id) do
-   GenServer.cast(pid, {:start, arena_id})
-  end
+  # def fight(pid, arena_id) do
+  #  GenServer.cast(pid, {:start, arena_id})
+  # end
 
-  def stop(pid) do
-    GenServer.cast(pid, :stop)
-  end
+  def stop(pid), do: GenServer.cast(pid, :stop)
 
   # Callback
 
-  def handle_cast({:start, arena_id}, state) do
-    # IO.puts "Foi ..."
-    action_turn(arena_id)
-    {:noreply, state}
-  end
+  # def handle_cast({:start, arena_id}, state) do
+  #   # IO.puts "Foi ..."
+  #   action_turn(arena_id)
+  #   {:noreply, state}
+  # end
 
-  def handle_cast(:stop, state) do
-    {:stop, :normal, state}
-  end
+  def handle_cast(:stop, state), do: {:stop, :normal, state}
 
   def handle_info({:turn, arena_id}, state) do
     # IO.puts "Important stuff in progress..."
     action_turn(arena_id)
+
     {:noreply, state}
   end
 
   defp action_turn(arena_id) do
     arena = Luta.Battle.get_arena!(arena_id)
+    combat = String.to_atom("arena@#{arena_id}")
+    scena = :ets.lookup(combat, :scena)[:scena]
 
     case arena.status do
       "closed" ->
@@ -50,7 +45,8 @@ defmodule Luta.CombatServer do
         :ok
       _ ->
         # IO.puts "loopppppp"
-        Process.send_after(self(), {:turn, arena_id}, 10_000)
+        :ets.insert(combat, {:scena, scena + 1})
+        Process.send_after(self(), {:turn, arena_id}, 5_000)
     end
   end
 end

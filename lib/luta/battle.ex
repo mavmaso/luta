@@ -101,6 +101,9 @@ defmodule Luta.Battle do
     Arena.changeset(arena, attrs)
   end
 
+  @doc """
+  WIP
+  """
   def check_arena!(%Arena{} = arena, status) do
     case arena.status == status do
       true -> {:ok, status}
@@ -108,6 +111,9 @@ defmodule Luta.Battle do
     end
   end
 
+  @doc """
+  WIP
+  """
   def check_player!(arena_id, user_id) do
     case get_arena!(arena_id) do
       %Arena{p1_id: ^user_id} -> {:ok, :p1}

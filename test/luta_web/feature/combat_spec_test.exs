@@ -24,6 +24,7 @@ defmodule LutaWeb.CombatSpecTest do
   describe "start" do
     test "a battle w/ 2 player all setup, Returns :ok", context do
       params = %{arena_id: context.arena.id}
+      combat = String.to_atom("arena@#{context.arena.id}")
 
       conn =
         login(context.conn, context.p1)
@@ -33,17 +34,18 @@ defmodule LutaWeb.CombatSpecTest do
       assert x_arena["status"] == "fighting"
       assert Battle.get_arena!(context.arena.id).status == "fighting"
 
-      assert [p1: x_p1] = :ets.lookup(String.to_atom("arena@#{context.arena.id}"), :p1)
+      assert [p1: x_p1] = :ets.lookup(combat, :p1)
       assert x_p1.char.id == context.arena.char1.id
       assert x_p1.id == context.arena.p1.id
       assert x_p1.status == "normal"
 
-      assert [p2: x_p2] = :ets.lookup(String.to_atom("arena@#{context.arena.id}"), :p2)
+      assert [p2: x_p2] = :ets.lookup(combat, :p2)
       assert x_p2.char.id == context.arena.char2.id
       assert x_p2.id == context.arena.p2.id
       assert x_p2.status == "normal"
 
-      assert :ets.delete(String.to_atom("arena@#{context.arena.id}"))
+      assert :ets.lookup(combat, :scena)[:scena] == 0
+      assert :ets.delete(combat)
     end
 
     test "Can't when arena is not waiting. Returns :error", context do

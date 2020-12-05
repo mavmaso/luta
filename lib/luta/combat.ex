@@ -3,7 +3,7 @@ defmodule Luta.Combat do
   The Combat module
   """
 
-  alias Luta.Battle
+  alias Luta.{Battle, CombatServer}
 
   @doc """
   WIP
@@ -29,6 +29,9 @@ defmodule Luta.Combat do
       char: Map.from_struct arena.char2 |> Map.delete(:__meta__)
     }})
     :ets.insert(combat, {:buffer_p2, %{list: [], size: 0}})
+
+    :ets.insert(combat, {:scena, -1})
+    CombatServer.start_link(arena.id)
 
     arena
   end
