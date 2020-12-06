@@ -110,7 +110,14 @@ defmodule LutaWeb.CombatSpecTest do
   end
 
   describe "run_buffer" do
+    test "check first scena's results", context do
+      arena = Luta.Combat.start(context.arena)
+      combat = Utils.combat_atom(context.arena.id)
 
+      :timer.sleep(3001)
+
+      assert 1 = :ets.lookup(combat, :scena)[:scena]
+    end
   end
 
   describe "proc" do
