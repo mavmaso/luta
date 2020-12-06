@@ -32,9 +32,7 @@ defmodule LutaWeb.CombatController do
   end
 
   def sync(conn, params) do
-    args = Utils.atomify_map(params)
-    # current_user = Plug.current_resource(conn)
-    with %Battle.Arena{} = arena <- Battle.get_arena!(args.arena_id) do
+    with %Battle.Arena{} = arena <- Battle.get_arena!(params["id"]) do
       info = Combat.sync(arena.id)
 
       json(conn, %{data: %{arena: arena, info: info}})

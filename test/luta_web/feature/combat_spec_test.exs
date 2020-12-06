@@ -88,11 +88,10 @@ defmodule LutaWeb.CombatSpecTest do
   describe "sync" do
     test "p1 request info about combat. Returns :ok", context do
       arena = Luta.Combat.start(context.arena)
-      params = %{arena_id: arena.id}
 
       conn =
         login(context.conn, context.p1)
-        |> post(Routes.combat_path(context.conn, :sync, params))
+        |> get(Routes.combat_path(context.conn, :sync, arena.id))
 
       assert subject = json_response(conn, 200)["data"]
       assert subject["arena"]["id"] == arena.id
@@ -111,12 +110,25 @@ defmodule LutaWeb.CombatSpecTest do
 
   describe "run_buffer" do
     test "check first scena's results", context do
+      # combat = Utils.combat_atom(context.arena.id)
       arena = Luta.Combat.start(context.arena)
-      combat = Utils.combat_atom(context.arena.id)
+      action = insert(:move_set)
+      params = %{arena_id: arena.id, action_id: action.id}
 
-      :timer.sleep(3001)
+      _conn =
+        login(context.conn, context.p1)
+        |> post(Routes.combat_path(context.conn, :actions, params))
 
-      assert 1 = :ets.lookup(combat, :scena)[:scena]
+      # :timer.sleep(3010)
+      Process.sleep(3010)
+      conn =
+        login(context.conn, context.p1)
+        |> get(Routes.combat_path(context.conn, :sync, arena.id))
+
+      assert subject = json_response(conn, 200)["data"]
+      # IO.inspect subject
+      assert subject["info"]["scena"] == 1
+      # assert subject["info"]["p2"]["hps"] == 100 - action.power
     end
   end
 

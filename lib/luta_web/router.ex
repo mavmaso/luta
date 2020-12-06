@@ -27,13 +27,12 @@ defmodule LutaWeb.Router do
     get "/my_user", UserController, :show
 
     resources "/arena", ArenaController, only: [:create, :delete]
-    put "/select_char", ArenaController, :select_char
     put "/join_arena", ArenaController, :join_arena
-
+    put "/select_char", ArenaController, :select_char
 
     post "/start", CombatController, :start
     post "/actions", CombatController, :actions
-    post "/sync", CombatController, :sync
+    get "/sync/:id", CombatController, :sync
   end
 
   # Enables LiveDashboard only for development
