@@ -109,6 +109,7 @@ defmodule LutaWeb.CombatSpecTest do
   end
 
   describe "run_buffer" do
+    @tag :heavy
     test "check first scena's results", context do
       # combat = Utils.combat_atom(context.arena.id)
       arena = Luta.Combat.start(context.arena)
