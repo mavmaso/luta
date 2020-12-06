@@ -24,7 +24,7 @@ defmodule LutaWeb.CombatSpecTest do
   describe "start" do
     test "a battle w/ 2 player all setup, Returns :ok", context do
       params = %{arena_id: context.arena.id}
-      combat = String.to_atom("arena@#{context.arena.id}")
+      combat = Utils.combat_atom(context.arena.id)
 
       conn =
         login(context.conn, context.p1)
@@ -97,7 +97,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject = json_response(conn, 200)["data"]
       assert subject["arena"]["id"] == arena.id
       assert subject["arena"]["status"] == arena.status
-      # assert subject["info"]["scena"] == 1
+      assert subject["info"]["scena"] == 0
 
       assert subject["info"]["p1"]["char"]["hps"] |> is_integer()
       assert subject["info"]["buffer_1"] == 0
@@ -105,11 +105,11 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject["info"]["p2"]["char"]["hps"] |> is_integer()
       assert subject["info"]["buffer_2"] == 0
 
-      assert :ets.delete(String.to_atom("arena@#{arena.id}"))
+      assert :ets.delete(Utils.combat_atom(arena.id))
     end
   end
 
-  describe "buffer" do
+  describe "run_buffer" do
 
   end
 
@@ -127,9 +127,9 @@ defmodule LutaWeb.CombatSpecTest do
         login(context.conn, context.p1)
         |> post(Routes.combat_path(context.conn, :forfeit, params))
 
-      assert %{"arena" => arena} = json_response(conn, 200)["data"]
-      assert arena["status"] == "closed"
-      assert false == :ets.delete(String.to_atom("arena@#{arena.id}"))
+      assert %{"arena" => subject} = json_response(conn, 200)["data"]
+      assert subject["status"] == "closed"
+      assert false == :ets.delete(Utils.combat_atom(arena.id))
     end
   end
 

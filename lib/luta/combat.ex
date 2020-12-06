@@ -10,10 +10,19 @@ defmodule Luta.Combat do
   """
   def start(%Battle.Arena{} = arena) do
     {:ok, arena} = Battle.update_arena(arena, %{status: "fighting"})
-    arena = Luta.Repo.preload(arena, [:char1, :char2])
-    table = "arena@#{arena.id}"
-    combat = :ets.new(String.to_atom(table), [:set, :named_table, :public])
+    new_arena = Luta.Repo.preload(arena, [:char1, :char2])
+    combat = :ets.new(Utils.combat_atom(arena.id), [:set, :named_table, :public])
 
+    build_p1_ets(combat, new_arena)
+    build_p2_ets(combat, new_arena)
+
+    :ets.insert(combat, {:scena, -1})
+    CombatServer.start_link(new_arena.id)
+
+    arena
+  end
+
+  defp build_p1_ets(combat, arena) do
     :ets.insert(combat, {:p1, %{
       hps: arena.char1.hps,
       status: "normal",
@@ -21,7 +30,9 @@ defmodule Luta.Combat do
       char: Map.from_struct arena.char1 |> Map.delete(:__meta__)
     }})
     :ets.insert(combat, {:buffer_p1, %{list: [], size: 0}})
+  end
 
+  defp build_p2_ets(combat, arena) do
     :ets.insert(combat, {:p2, %{
       hps: arena.char2.hps,
       status: "normal",
@@ -29,11 +40,6 @@ defmodule Luta.Combat do
       char: Map.from_struct arena.char2 |> Map.delete(:__meta__)
     }})
     :ets.insert(combat, {:buffer_p2, %{list: [], size: 0}})
-
-    :ets.insert(combat, {:scena, -1})
-    CombatServer.start_link(arena.id)
-
-    arena
   end
 
   @doc """
@@ -41,7 +47,7 @@ defmodule Luta.Combat do
   """
   def actions(arena_id, user_id, action) do
     with {:ok, key} <- Battle.check_player!(arena_id, user_id) do
-      combat = String.to_atom("arena@#{arena_id}")
+      combat = Utils.combat_atom(arena_id)
       buffer = String.to_atom("buffer_#{key}")
       b_map = :ets.lookup(combat, buffer)[buffer]
 
@@ -75,7 +81,8 @@ defmodule Luta.Combat do
   WIP
   """
   def sync(arena_id) do
-    combat = String.to_atom("arena@#{arena_id}")
+    combat = Utils.combat_atom(arena_id)
+    scena = :ets.lookup(combat, :scena)[:scena]
 
     p1 = :ets.lookup(combat, :p1)[:p1]
     buffer_p1 = String.to_atom("buffer_#{:p1}")
@@ -85,6 +92,6 @@ defmodule Luta.Combat do
     buffer_p2 = String.to_atom("buffer_#{:p2}")
     b_map_p2 = :ets.lookup(combat, buffer_p2)[buffer_p2].size
 
-    %{p1: p1, buffer_1: b_map_p1, p2: p2, buffer_2: b_map_p2}
+    %{p1: p1, buffer_1: b_map_p1, p2: p2, buffer_2: b_map_p2, scena: scena}
   end
 end

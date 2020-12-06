@@ -15,7 +15,7 @@ defmodule LutaWeb.Router do
     pipe_through :api
 
     get "/arenas", ArenaController, :index
-    get "/arena", ArenaController, :show
+    get "/arena/:id", ArenaController, :show
 
     post "/sign_up", UserController, :create
     post "/login", UserController, :login

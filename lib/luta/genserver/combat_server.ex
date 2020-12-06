@@ -36,7 +36,7 @@ defmodule Luta.CombatServer do
 
   defp action_turn(arena_id) do
     arena = Luta.Battle.get_arena!(arena_id)
-    combat = String.to_atom("arena@#{arena_id}")
+    combat = Utils.combat_atom(arena_id)
     scena = :ets.lookup(combat, :scena)[:scena]
 
     case arena.status do
@@ -46,7 +46,7 @@ defmodule Luta.CombatServer do
       _ ->
         # IO.puts "loopppppp"
         :ets.insert(combat, {:scena, scena + 1})
-        Process.send_after(self(), {:turn, arena_id}, 5_000)
+        Process.send_after(self(), {:turn, arena_id}, 3_000)
     end
   end
 end

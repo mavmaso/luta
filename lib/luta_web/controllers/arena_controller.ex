@@ -21,7 +21,7 @@ defmodule LutaWeb.ArenaController do
   end
 
   def show(conn, params) do
-    arena = Battle.get_arena!(params["arena_id"])
+    arena = Battle.get_arena!(params["id"])
     json(conn, %{data: %{arena: arena}})
   end
 

@@ -37,11 +37,10 @@ defmodule LutaWeb.ArenaControllerTest do
     test "a arena. Returns :ok", %{conn: conn} do
       p1 = insert(:user)
       arena = insert(:arena)
-      params = %{arena_id: arena.id}
 
       conn =
         login(conn, p1)
-        |>get(Routes.arena_path(conn, :show, params))
+        |>get(Routes.arena_path(conn, :show, arena.id))
 
       assert %{"arena" => subject} = json_response(conn, 200)["data"]
       assert subject["id"] == arena.id

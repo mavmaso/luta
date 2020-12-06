@@ -9,4 +9,8 @@ defmodule Utils do
   def get_current_user(conn) do
     Luta.Guardian.Plug.current_resource(conn)
   end
+
+  def combat_atom(arena_id) do
+    String.to_atom("@#{arena_id}")
+  end
 end
