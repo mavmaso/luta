@@ -72,8 +72,8 @@ defmodule Luta.Combat do
     {:error, :cant_insert}
   end
 
-  defp add_to_buffer(new_map, combat, buffer) do
-    :ets.insert(combat, {buffer, new_map})
+  defp add_to_buffer(new_map, combat, buffer_key) do
+    :ets.insert(combat, {buffer_key, new_map})
     {:ok, new_map}
   end
 
@@ -92,6 +92,6 @@ defmodule Luta.Combat do
     buffer_p2 = String.to_atom("buffer_#{:p2}")
     buffer_map_p2 = :ets.lookup(combat, buffer_p2)[buffer_p2].size
 
-    %{p1: p1, buffer_1: buffer_map_p1, p2: p2, buffer_2: buffer_map_p2, scena: scena}
+    %{p1: p1, buffer_1_size: buffer_map_p1, p2: p2, buffer_2_size: buffer_map_p2, scena: scena}
   end
 end

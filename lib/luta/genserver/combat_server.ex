@@ -37,7 +37,13 @@ defmodule Luta.CombatServer do
   defp action_turn(arena_id) do
     arena = Luta.Battle.get_arena!(arena_id)
     combat = Utils.combat_atom(arena_id)
+
     scena = :ets.lookup(combat, :scena)[:scena]
+
+    buffer_list_p1 = :ets.lookup(combat, :buffer_p1)[:buffer_p1].list
+    {p1_action, _list} = List.pop_at(buffer_list_p1, 0)
+    # :ets.insert(combat, {:buffer_p1x, list})
+    p1_action |> IO.inspect
 
     case arena.status do
       "closed" ->
