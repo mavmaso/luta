@@ -54,7 +54,7 @@ defmodule Luta.CombatServer do
       _ ->
         # IO.puts "loopppppp"
         ETS.insert_scena(combat, scena + 1)
-        Process.send_after(self(), {:turn, arena_id}, 3_000)
+        Process.send_after(self(), {:turn, arena_id}, 2_000)
     end
   end
 end

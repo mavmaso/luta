@@ -12,34 +12,13 @@ defmodule Luta.Combat do
     {:ok, arena} = Battle.update_arena(arena, %{status: "fighting"})
     new_arena = Luta.Repo.preload(arena, [:char1, :char2])
     combat = ETS.start_table(new_arena.id)
-
-    build_p1_ets(combat, new_arena)
-    build_p2_ets(combat, new_arena)
+    ETS.insert_player(combat, new_arena, :p1)
+    ETS.insert_player(combat, new_arena, :p2)
 
     ETS.insert_scena(combat, -1)
     CombatServer.start_link(new_arena.id)
 
-    arena
-  end
-
-  defp build_p1_ets(combat, arena) do
-    :ets.insert(combat, {:p1, %{
-      hps: arena.char1.hps,
-      status: "normal",
-      id: arena.p1_id,
-      char: Map.from_struct arena.char1 |> Map.delete(:__meta__)
-    }})
-    :ets.insert(combat, {:buffer_p1, %{list: [], size: 0}})
-  end
-
-  defp build_p2_ets(combat, arena) do
-    :ets.insert(combat, {:p2, %{
-      hps: arena.char2.hps,
-      status: "normal",
-      id: arena.p2_id,
-      char: Map.from_struct arena.char2 |> Map.delete(:__meta__)
-    }})
-    :ets.insert(combat, {:buffer_p2, %{list: [], size: 0}})
+    new_arena
   end
 
   @doc """
@@ -48,33 +27,28 @@ defmodule Luta.Combat do
   def actions(arena_id, user_id, action) do
     with {:ok, key} <- Battle.check_player!(arena_id, user_id) do
       combat = Utils.combat_atom(arena_id)
-      buffer_key = String.to_atom("buffer_#{key}")
-      buffer_map = :ets.lookup(combat, buffer_key)[buffer_key]
+      key = String.to_atom("buffer_#{key}")
+      buffer = ETS.lookup(combat, key)
 
-      check_buffer(buffer_map, action) |> add_to_buffer(combat, buffer_key)
+      check_buffer(buffer, action) |> add_to_buffer(combat, key)
     end
   end
 
-  defp check_buffer(buffer_map, action) do
-    total_size = buffer_map.size + action.size
-    case total_size <= 5 do
-      true -> build_buffer_map(buffer_map, action, total_size)
+  defp check_buffer(buffer, action) do
+    # total_size = length(buffer) + 1
+    case length(buffer) + 1 <= 3 do
+      true -> buffer ++ [action]
       _ -> {:error}
     end
-  end
-
-  defp build_buffer_map(buffer_map, action, total_size) do
-    Map.put(buffer_map, :list, buffer_map.list ++ [action])
-    |> Map.put(:size, total_size)
   end
 
   defp add_to_buffer({:error}, _, _) do
     {:error, :cant_insert}
   end
 
-  defp add_to_buffer(new_map, combat, buffer_key) do
-    :ets.insert(combat, {buffer_key, new_map})
-    {:ok, new_map}
+  defp add_to_buffer(buffer, combat, key) do
+    ETS.insert_buffer(combat, buffer, key)
+    {:ok, buffer}
   end
 
   @doc """
@@ -85,11 +59,11 @@ defmodule Luta.Combat do
     scena = ETS.lookup(combat, "scena")
 
     p1 = ETS.lookup(combat, "p1")
-    buffer_map_p1 = ETS.lookup(combat, "buffer_p1").size
+    buffer_p1 = ETS.lookup(combat, "buffer_p1") |> length()
 
     p2 = ETS.lookup(combat, "p2")
-    buffer_map_p2 = ETS.lookup(combat, "buffer_p2").size
+    buffer_p2 = ETS.lookup(combat, "buffer_p2") |> length()
 
-    %{p1: p1, buffer_1_size: buffer_map_p1, p2: p2, buffer_2_size: buffer_map_p2, scena: scena}
+    %{p1: p1, buffer_1_size: buffer_p1, p2: p2, buffer_2_size: buffer_p2, scena: scena}
   end
 end
