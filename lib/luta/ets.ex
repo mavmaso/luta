@@ -11,11 +11,12 @@ defmodule Luta.ETS do
     :ets.delete(Utils.combat_atom(arena_id))
   end
 
-  def insert_scena(table, content) do
-    :ets.insert(table, {:scena, content})
+  def lookup(table, target) do
+    key = String.to_atom("#{target}")
+    :ets.lookup(table, key)[key]
   end
 
-  def lookup_scena(table) do
-    :ets.lookup(table, :scena)[:scena]
+  def insert_scena(table, content) do
+    :ets.insert(table, {:scena, content})
   end
 end

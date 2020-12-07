@@ -82,15 +82,13 @@ defmodule Luta.Combat do
   """
   def sync(arena_id) do
     combat = Utils.combat_atom(arena_id)
-    scena = :ets.lookup(combat, :scena)[:scena]
+    scena = ETS.lookup(combat, "scena")
 
-    p1 = :ets.lookup(combat, :p1)[:p1]
-    buffer_p1 = String.to_atom("buffer_#{:p1}")
-    buffer_map_p1 = :ets.lookup(combat, buffer_p1)[buffer_p1].size
+    p1 = ETS.lookup(combat, "p1")
+    buffer_map_p1 = ETS.lookup(combat, "buffer_p1").size
 
-    p2 = :ets.lookup(combat, :p2)[:p2]
-    buffer_p2 = String.to_atom("buffer_#{:p2}")
-    buffer_map_p2 = :ets.lookup(combat, buffer_p2)[buffer_p2].size
+    p2 = ETS.lookup(combat, "p2")
+    buffer_map_p2 = ETS.lookup(combat, "buffer_p2").size
 
     %{p1: p1, buffer_1_size: buffer_map_p1, p2: p2, buffer_2_size: buffer_map_p2, scena: scena}
   end

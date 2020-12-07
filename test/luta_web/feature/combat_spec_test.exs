@@ -34,17 +34,17 @@ defmodule LutaWeb.CombatSpecTest do
       assert x_arena["status"] == "fighting"
       assert Battle.get_arena!(context.arena.id).status == "fighting"
 
-      assert [p1: x_p1] = :ets.lookup(combat, :p1)
+      assert x_p1 = ETS.lookup(combat, "p1")
       assert x_p1.char.id == context.arena.char1.id
       assert x_p1.id == context.arena.p1.id
       assert x_p1.status == "normal"
 
-      assert [p2: x_p2] = :ets.lookup(combat, :p2)
+      assert x_p2 = ETS.lookup(combat, "p2")
       assert x_p2.char.id == context.arena.char2.id
       assert x_p2.id == context.arena.p2.id
       assert x_p2.status == "normal"
 
-      assert :ets.lookup(combat, :scena)[:scena] == 0
+      assert ETS.lookup(combat, "scena") == 0
       assert ETS.delete_table(context.arena.id)
     end
 
