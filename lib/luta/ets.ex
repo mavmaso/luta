@@ -58,7 +58,8 @@ defmodule Luta.ETS do
   @doc """
   WIP
   """
-  def insert_buffer(table, buffer, key) do
-    :ets.insert(table, {key, buffer})
+  def insert_buffer(table, content, key) do
+    #TODO
+    :ets.insert(table, {key, content})
   end
 end

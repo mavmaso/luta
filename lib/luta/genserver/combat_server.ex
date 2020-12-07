@@ -42,10 +42,11 @@ defmodule Luta.CombatServer do
 
     scena = ETS.lookup(combat, "scena")
 
-    # buffer_list_p1 = :ets.lookup(combat, :buffer_p1)[:buffer_p1].list
-    # {p1_action, _list} = List.pop_at(buffer_list_p1, 0)
-    # :ets.insert(combat, {:buffer_p1x, list})
+    buffer_p1 = ETS.lookup(combat, "buffer_p1")
+    {_p1_action, list} = List.pop_at(buffer_p1, 0)
+    ETS.insert_buffer(combat, list, :buffer_p1)
     # p1_action |> IO.inspect
+
 
     case arena.status do
       "closed" ->
