@@ -3,7 +3,7 @@ defmodule LutaWeb.CombatSpecTest do
 
   import Luta.Factory
 
-  alias Luta.Battle
+  alias Luta.{Battle, ETS}
 
   setup %{conn: conn} do
     p1 = insert(:user)
@@ -45,7 +45,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert x_p2.status == "normal"
 
       assert :ets.lookup(combat, :scena)[:scena] == 0
-      assert :ets.delete(combat)
+      assert ETS.delete_table(context.arena.id)
     end
 
     test "Can't when arena is not waiting. Returns :error", context do
@@ -99,12 +99,12 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject["info"]["scena"] == 0
 
       assert subject["info"]["p1"]["char"]["hps"] |> is_integer()
-      assert subject["info"]["buffer_1"] == 0
+      assert subject["info"]["buffer_1_size"] == 0
 
       assert subject["info"]["p2"]["char"]["hps"] |> is_integer()
-      assert subject["info"]["buffer_2"] == 0
+      assert subject["info"]["buffer_2_size"] == 0
 
-      assert :ets.delete(Utils.combat_atom(arena.id))
+      assert ETS.delete_table(arena.id)
     end
   end
 
@@ -154,7 +154,7 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert %{"arena" => subject} = json_response(conn, 200)["data"]
       assert subject["status"] == "closed"
-      assert false == :ets.delete(Utils.combat_atom(arena.id))
+      assert false == ETS.delete_table(arena.id)
     end
   end
 

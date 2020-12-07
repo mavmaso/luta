@@ -1,6 +1,8 @@
 defmodule Luta.CombatServer do
   use GenServer
 
+  alias Luta.ETS
+
   # API
 
   def start_link(arena_id), do: GenServer.start_link(__MODULE__, arena_id)
@@ -38,12 +40,12 @@ defmodule Luta.CombatServer do
     arena = Luta.Battle.get_arena!(arena_id)
     combat = Utils.combat_atom(arena_id)
 
-    scena = :ets.lookup(combat, :scena)[:scena]
+    scena = ETS.lookup_scena(combat)
 
-    buffer_list_p1 = :ets.lookup(combat, :buffer_p1)[:buffer_p1].list
-    {p1_action, _list} = List.pop_at(buffer_list_p1, 0)
+    # buffer_list_p1 = :ets.lookup(combat, :buffer_p1)[:buffer_p1].list
+    # {p1_action, _list} = List.pop_at(buffer_list_p1, 0)
     # :ets.insert(combat, {:buffer_p1x, list})
-    p1_action |> IO.inspect
+    # p1_action |> IO.inspect
 
     case arena.status do
       "closed" ->
@@ -51,7 +53,7 @@ defmodule Luta.CombatServer do
         :ok
       _ ->
         # IO.puts "loopppppp"
-        :ets.insert(combat, {:scena, scena + 1})
+        ETS.insert_scena(combat, scena + 1)
         Process.send_after(self(), {:turn, arena_id}, 3_000)
     end
   end

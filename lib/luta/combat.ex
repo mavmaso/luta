@@ -3,7 +3,7 @@ defmodule Luta.Combat do
   The Combat module
   """
 
-  alias Luta.{Battle, CombatServer}
+  alias Luta.{Battle, CombatServer, ETS}
 
   @doc """
   WIP
@@ -11,12 +11,12 @@ defmodule Luta.Combat do
   def start(%Battle.Arena{} = arena) do
     {:ok, arena} = Battle.update_arena(arena, %{status: "fighting"})
     new_arena = Luta.Repo.preload(arena, [:char1, :char2])
-    combat = :ets.new(Utils.combat_atom(arena.id), [:set, :named_table, :public])
+    combat = ETS.start_table(new_arena.id)
 
     build_p1_ets(combat, new_arena)
     build_p2_ets(combat, new_arena)
 
-    :ets.insert(combat, {:scena, -1})
+    ETS.insert_scena(combat, -1)
     CombatServer.start_link(new_arena.id)
 
     arena
