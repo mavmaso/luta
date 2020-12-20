@@ -101,4 +101,28 @@ defmodule Luta.Cards do
   def change_move_set(%MoveSet{} = move_set, attrs \\ %{}) do
     MoveSet.changeset(move_set, attrs)
   end
+
+  def card_resolver(card_1, card_2) do
+    start_1 = if is_nil(card_1), do: 0, else: card_1.start_up
+    start_2 = if is_nil(card_2), do: 0, else: card_2.start_up
+
+    prime =
+      cond do
+        start_1 - start_2 > 0 ->
+          :p1
+        start_2 - start_1 > 0 ->
+          :p2
+        start_1 == start_2 ->
+          :draw
+      end
+
+    case prime do
+      :p1 ->
+        "algo"
+      :p2 ->
+        "outro"
+      :draw ->
+        "n sei"
+    end
+  end
 end

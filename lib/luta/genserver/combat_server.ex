@@ -1,7 +1,7 @@
 defmodule Luta.CombatServer do
   use GenServer
 
-  alias Luta.ETS
+  alias Luta.{ETS, Cards}
 
   # API
 
@@ -43,10 +43,14 @@ defmodule Luta.CombatServer do
     scena = ETS.lookup(combat, "scena")
 
     buffer_p1 = ETS.lookup(combat, "buffer_p1")
-    {_p1_action, list} = List.pop_at(buffer_p1, 0)
-    ETS.insert_buffer(combat, list, :buffer_p1)
-    # p1_action |> IO.inspect
+    {p1_action, list_1} = List.pop_at(buffer_p1, 0)
+    ETS.insert_buffer(combat, list_1, :buffer_p1)
 
+    buffer_p2 = ETS.lookup(combat, "buffer_p2")
+    {p2_action, list_2} = List.pop_at(buffer_p2, 0)
+    ETS.insert_buffer(combat, list_2, :buffer_p2)
+
+    Cards.card_resolver(p1_action, p2_action) |> IO.inspect
 
     case arena.status do
       "closed" ->

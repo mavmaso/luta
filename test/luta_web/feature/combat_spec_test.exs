@@ -70,7 +70,7 @@ defmodule LutaWeb.CombatSpecTest do
         login(context.conn, context.p1)
         |> post(Routes.combat_path(context.conn, :actions, params))
 
-      assert [x_first] = json_response(conn, 200)["data"]["buffer"]
+      assert [_x_first] = json_response(conn, 200)["data"]["buffer"]
 
       action_two = insert(:move_set)
       params_two = %{arena_id: arena.id, action_id: action_two.id}
@@ -124,7 +124,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert x_list = json_response(conn, 200)["data"]["buffer"]
 
       # :timer.sleep(3010)
-      Process.sleep(3010)
+      Process.sleep(2010)
       conn =
         login(context.conn, context.p1)
         |> get(Routes.combat_path(context.conn, :sync, arena.id))
