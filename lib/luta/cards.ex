@@ -125,4 +125,21 @@ defmodule Luta.Cards do
         "n sei"
     end
   end
+
+  defp card_reader(card) do
+    case card.type do
+      # "W" -> maneuver_action(card)
+      "A" -> def_action(card)
+      # "S" -> buff_action(card)
+      "D" -> atk_action(card)
+    end
+  end
+
+  defp atk_action(card) do
+    %{dmg: card.power, buff: nil , stance: nil}
+  end
+
+  defp def_action(card) do
+    %{dmg: 0, buff: nil, stance: nil}
+  end
 end
