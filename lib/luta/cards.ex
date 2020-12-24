@@ -116,6 +116,9 @@ defmodule Luta.Cards do
           :draw
       end
 
+    _action_1 = card_reader(card_1)
+    _action_2 = card_reader(card_2)
+
     case prime do
       :p1 ->
         "algo"
@@ -135,11 +138,20 @@ defmodule Luta.Cards do
     end
   end
 
+  def maneuver_action(_card) do
+    %{dmg: nil, buff: "algo" , stance: "algo", narrative: "is just observing"}
+  end
+
   defp atk_action(card) do
-    %{dmg: card.power, buff: nil , stance: nil}
+    %{dmg: card.power, buff: nil , stance: nil, narrative: "is going toward you"}
+  end
+
+  def buff_action(_card) do
+    %{dmg: nil, buff: "algo", stance: nil, narrative: "is just observing"}
   end
 
   defp def_action(card) do
-    %{dmg: 0, buff: nil, stance: nil}
+    [card]
+    %{dmg: 0, buff: nil, stance: "blocking", narrative: "is backing up"}
   end
 end

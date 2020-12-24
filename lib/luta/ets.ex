@@ -38,8 +38,8 @@ defmodule Luta.ETS do
   def insert_player(table, arena, :p1) do
     :ets.insert(table, {:p1, %{
       hps: arena.char1.hps,
-      status: "normal",
-      stance: "normal",
+      status: ["normal"],
+      stance: "stand-up",
       id: arena.p1_id,
       char: Map.from_struct arena.char1 |> Map.delete(:__meta__)
     }})
@@ -49,8 +49,8 @@ defmodule Luta.ETS do
   def insert_player(table, arena, :p2) do
     :ets.insert(table, {:p2, %{
       hps: arena.char2.hps,
-      status: "normal",
-      stance: "normal",
+      status: ["normal"],
+      stance: "stand-up",
       id: arena.p2_id,
       char: Map.from_struct arena.char2 |> Map.delete(:__meta__)
     }})
