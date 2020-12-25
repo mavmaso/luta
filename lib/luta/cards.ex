@@ -102,6 +102,9 @@ defmodule Luta.Cards do
     MoveSet.changeset(move_set, attrs)
   end
 
+  @doc """
+  WIP
+  """
   def card_resolver(card_1, card_2) do
     start_1 = if is_nil(card_1), do: 0, else: card_1.start_up
     start_2 = if is_nil(card_2), do: 0, else: card_2.start_up
@@ -152,6 +155,6 @@ defmodule Luta.Cards do
 
   defp def_action(card) do
     [card]
-    %{dmg: 0, buff: nil, stance: "blocking", narrative: "is backing up"}
+    %{dmg: 0, buff: nil, stance: "blocking", narrative: "is going away from you"}
   end
 end

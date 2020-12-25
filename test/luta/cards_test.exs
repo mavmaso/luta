@@ -28,7 +28,6 @@ defmodule Luta.CardsTest do
       assert {:ok, %MoveSet{} = subject} = Cards.create_move_set(params)
       assert subject.description == params.description
       assert subject.power == params.power
-      assert subject.size == params.size
       assert subject.special == params.special
       assert subject.type == params.type
     end
@@ -46,7 +45,6 @@ defmodule Luta.CardsTest do
       assert {:ok, %MoveSet{} = subject} = Cards.update_move_set(move_set, params)
       assert subject.description == params.description
       assert subject.power == params.power
-      assert subject.size == params.size
       assert subject.special == params.special
       assert subject.type == params.type
     end
