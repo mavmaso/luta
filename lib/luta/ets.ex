@@ -68,4 +68,11 @@ defmodule Luta.ETS do
     #TODO
     :ets.insert(table, {key, content})
   end
+
+  @doc """
+  WIP
+  """
+  def insert_stage(table, content) do
+    :ets.insert(table, {:stage, content})
+  end
 end

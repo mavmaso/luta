@@ -112,7 +112,7 @@ defmodule Luta.Cards do
     action_1 = card_reader(neo_card_1)
     action_2 = card_reader(neo_card_2)
 
-    {action_1, action_2}
+    [action_1, action_2]
   end
 
   defp not_null(card) do

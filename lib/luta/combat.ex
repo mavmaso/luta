@@ -59,11 +59,13 @@ defmodule Luta.Combat do
     scena = ETS.lookup(combat, "scena")
 
     p1 = ETS.lookup(combat, "p1")
-    buffer_p1 = ETS.lookup(combat, "buffer_p1") |> length()
+    bp1 = ETS.lookup(combat, "buffer_p1") |> length()
 
     p2 = ETS.lookup(combat, "p2")
-    buffer_p2 = ETS.lookup(combat, "buffer_p2") |> length()
+    bp2 = ETS.lookup(combat, "buffer_p2") |> length()
 
-    %{p1: p1, buffer_1_size: buffer_p1, p2: p2, buffer_2_size: buffer_p2, scena: scena}
+    stage = ETS.lookup(combat, "stage")
+
+    %{p1: p1, buffer_1_size: bp1, p2: p2, buffer_2_size: bp2, scena: scena, stage: stage}
   end
 end

@@ -96,6 +96,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject["arena"]["id"] == arena.id
       assert subject["arena"]["status"] == arena.status
       assert subject["info"]["scena"] == 0
+      assert subject["info"]["stage"]
 
       assert subject["info"]["p1"]["hps"] |> is_integer()
       assert subject["info"]["buffer_1_size"] == 0
