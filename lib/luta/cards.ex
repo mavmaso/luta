@@ -106,35 +106,22 @@ defmodule Luta.Cards do
   WIP
   """
   def card_resolver(card_1, card_2) do
-    start_1 = if is_nil(card_1), do: 0, else: card_1.start_up
-    start_2 = if is_nil(card_2), do: 0, else: card_2.start_up
+    neo_card_1 = not_null(card_1)
+    neo_card_2 = not_null(card_2)
 
-    prime =
-      cond do
-        start_1 - start_2 > 0 ->
-          :p1
-        start_2 - start_1 > 0 ->
-          :p2
-        start_1 == start_2 ->
-          :draw
-      end
+    action_1 = card_reader(neo_card_1)
+    action_2 = card_reader(neo_card_2)
 
-    _action_1 = card_reader(card_1)
-    _action_2 = card_reader(card_2)
+    {action_1, action_2}
+  end
 
-    case prime do
-      :p1 ->
-        "algo"
-      :p2 ->
-        "outro"
-      :draw ->
-        "n sei"
-    end
+  defp not_null(card) do
+    if is_nil(card), do: %MoveSet{type: "W", start_up: 10}, else: card
   end
 
   defp card_reader(card) do
     case card.type do
-      # "W" -> maneuver_action(card)
+      "W" -> maneuver_action(card)
       "A" -> def_action(card)
       # "S" -> buff_action(card)
       "D" -> atk_action(card)
@@ -142,19 +129,18 @@ defmodule Luta.Cards do
   end
 
   def maneuver_action(_card) do
-    %{dmg: nil, buff: "algo" , stance: "algo", narrative: "is just observing"}
+    %{dmg: nil, buff: "algo", debuff: nil, narrative: "is just observing"}
   end
 
   defp atk_action(card) do
-    %{dmg: card.power, buff: nil , stance: nil, narrative: "is going toward you"}
+    %{dmg: card.power, buff: nil, debuff: nil,  narrative: "is going toward you"}
   end
 
   def buff_action(_card) do
-    %{dmg: nil, buff: "algo", stance: nil, narrative: "is just observing"}
+    %{dmg: nil, buff: "algo",  debuff: nil, narrative: "is just observing"}
   end
 
-  defp def_action(card) do
-    [card]
-    %{dmg: 0, buff: nil, stance: "blocking", narrative: "is going away from you"}
+  defp def_action(_card) do
+    %{dmg: 0, buff: ["blocking"],  debuff: nil, narrative: "is going away from you"}
   end
 end

@@ -50,7 +50,7 @@ defmodule Luta.CombatServer do
     {p2_action, list_2} = List.pop_at(buffer_p2, 0)
     ETS.insert_buffer(combat, list_2, :buffer_p2)
 
-    # Cards.card_resolver(p1_action, p2_action) |> IO.inspect
+    Cards.card_resolver(p1_action, p2_action)
 
     case arena.status do
       "closed" ->
@@ -59,7 +59,7 @@ defmodule Luta.CombatServer do
       _ ->
         # IO.puts "loopppppp"
         ETS.insert_scena(combat, scena + 1)
-        Process.send_after(self(), {:turn, arena_id}, 2_000)
+        Process.send_after(self(), {:turn, arena_id}, 1_500)
     end
   end
 end
