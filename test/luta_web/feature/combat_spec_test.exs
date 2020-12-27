@@ -35,12 +35,12 @@ defmodule LutaWeb.CombatSpecTest do
       assert Battle.get_arena!(context.arena.id).status == "fighting"
 
       assert x_p1 = ETS.lookup(combat, "p1")
-      assert x_p1.char.id == context.arena.char1.id
+      assert x_p1.char_id == context.arena.char1.id
       assert x_p1.id == context.arena.p1.id
       assert x_p1.status == ["normal"]
 
       assert x_p2 = ETS.lookup(combat, "p2")
-      assert x_p2.char.id == context.arena.char2.id
+      assert x_p2.char_id == context.arena.char2.id
       assert x_p2.id == context.arena.p2.id
       assert x_p2.status == ["normal"]
 
@@ -97,10 +97,10 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject["arena"]["status"] == arena.status
       assert subject["info"]["scena"] == 0
 
-      assert subject["info"]["p1"]["char"]["hps"] |> is_integer()
+      assert subject["info"]["p1"]["hps"] |> is_integer()
       assert subject["info"]["buffer_1_size"] == 0
 
-      assert subject["info"]["p2"]["char"]["hps"] |> is_integer()
+      assert subject["info"]["p2"]["hps"] |> is_integer()
       assert subject["info"]["buffer_2_size"] == 0
 
       assert ETS.delete_table(arena.id)

@@ -39,9 +39,11 @@ defmodule Luta.ETS do
     :ets.insert(table, {:p1, %{
       hps: arena.char1.hps,
       status: ["normal"],
-      stance: "stand-up",
       id: arena.p1_id,
-      char: Map.from_struct arena.char1 |> Map.delete(:__meta__)
+      char_id: arena.char1_id,
+      atk: arena.char1.atk,
+      def: arena.char1.def,
+      spd: arena.char1.spd,
     }})
     :ets.insert(table, {:buffer_p1, []})
   end
@@ -50,9 +52,11 @@ defmodule Luta.ETS do
     :ets.insert(table, {:p2, %{
       hps: arena.char2.hps,
       status: ["normal"],
-      stance: "stand-up",
       id: arena.p2_id,
-      char: Map.from_struct arena.char2 |> Map.delete(:__meta__)
+      char_id: arena.char2_id,
+      atk: arena.char2.atk,
+      def: arena.char2.def,
+      spd: arena.char2.spd,
     }})
     :ets.insert(table, {:buffer_p2, []})
   end
