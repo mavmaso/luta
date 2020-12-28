@@ -17,6 +17,7 @@ Luta
 - Install dependencies with `mix deps.get`
 - Create and migrate your database with `mix ecto.setup`
 - Start Phoenix endpoint with `mix phx.server`
+- Run complete tests `mix e2e --include heavy`
 
 ## Database
  https://dbdiagram.io/d/5f9f89fe3a78976d7b7a12bc

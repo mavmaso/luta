@@ -124,8 +124,8 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert x_list = json_response(conn, 200)["data"]["buffer"]
 
-      # :timer.sleep(3010)
       Process.sleep(1510)
+
       conn =
         login(context.conn, context.p1)
         |> get(Routes.combat_path(context.conn, :sync, arena.id))
