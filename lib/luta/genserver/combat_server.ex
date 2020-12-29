@@ -1,7 +1,7 @@
 defmodule Luta.CombatServer do
   use GenServer
 
-  alias Luta.{ETS, Cards}
+  alias Luta.{ETS, Cards, Combat}
 
   # API
 
@@ -50,7 +50,8 @@ defmodule Luta.CombatServer do
     {p2_action, list_2} = List.pop_at(buffer_p2, 0)
     ETS.insert_buffer(combat, list_2, :buffer_p2)
 
-    _stage = ETS.lookup(combat, "stage")
+    ETS.lookup(combat, "stage") |> Combat.proc()
+
     neo_stage = Cards.card_resolver(p1_action, p2_action)
     ETS.insert_stage(combat, neo_stage)
 

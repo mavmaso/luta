@@ -68,4 +68,15 @@ defmodule Luta.Combat do
 
     %{p1: p1, buffer_1_size: bp1, p2: p2, buffer_2_size: bp2, scena: scena, stage: stage}
   end
+
+  @doc """
+  WIP
+  """
+  def proc([%{dmg: d_1} = a1, %{dmg: d_2} = a2]) when is_nil(d_1) or is_nil(d_2) do
+    [a1, a2]
+  end
+
+  def proc(_list) do
+    :nada
+  end
 end
