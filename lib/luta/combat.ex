@@ -66,17 +66,23 @@ defmodule Luta.Combat do
 
     stage = ETS.lookup(combat, "stage")
 
-    %{p1: p1, buffer_1_size: bp1, p2: p2, buffer_2_size: bp2, scena: scena, stage: stage}
+    %{p1: p1, buffer_1_size: bp1, p2: p2, buffer_2_size: bp2, scena: scena, narrator: narrator(stage)}
+  end
+
+  defp narrator([%{narrative: n_1}, %{narrative: n_2}]) do
+    [n_1, n_2]
   end
 
   @doc """
   WIP
   """
-  def proc([%{dmg: d_1} = a1, %{dmg: d_2} = a2]) when is_nil(d_1) or is_nil(d_2) do
-    [a1, a2]
+  def proc([%{dmg: dmg_1} = action_1, %{dmg: dmg_2} = action_2], combat)
+    when (dmg_1 != 0 or dmg_2 != 0) do
+    [action_1, action_2, combat]
+    "WIP"
   end
 
-  def proc(_list) do
+  def proc(_list, _combat) do
     :nada
   end
 end

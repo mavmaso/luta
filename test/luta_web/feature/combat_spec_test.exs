@@ -96,7 +96,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject["arena"]["id"] == arena.id
       assert subject["arena"]["status"] == arena.status
       assert subject["info"]["scena"] == 0
-      assert subject["info"]["stage"]
+      assert subject["info"]["narrator"]
 
       assert subject["info"]["p1"]["hps"] |> is_integer()
       assert subject["info"]["buffer_1_size"] == 0
@@ -110,7 +110,7 @@ defmodule LutaWeb.CombatSpecTest do
 
   describe "run_buffer" do
     @tag :heavy
-    test "check first scena's results", context do
+    test "check secound scena's results", context do
       # combat = Utils.combat_atom(context.arena.id)
       arena = Luta.Combat.start(context.arena)
       action = insert(:move_set)
@@ -124,7 +124,7 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert x_list = json_response(conn, 200)["data"]["buffer"]
 
-      Process.sleep(1510)
+      Process.sleep(3005)
 
       conn =
         login(context.conn, context.p1)
@@ -132,8 +132,8 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert subject = json_response(conn, 200)["data"]
       # IO.inspect subject
-      assert subject["info"]["scena"] == 1
-      assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 1
+      assert subject["info"]["scena"] == 2
+      assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 2
       # assert subject["info"]["p2"]["hps"] == 100 - action.power
     end
   end

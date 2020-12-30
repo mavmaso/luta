@@ -123,24 +123,24 @@ defmodule Luta.Cards do
     case card.type do
       "W" -> maneuver_action(card)
       "A" -> def_action(card)
-      # "S" -> buff_action(card)
+      "S" -> buff_action(card)
       "D" -> atk_action(card)
     end
   end
 
   def maneuver_action(_card) do
-    %{dmg: nil, buff: "algo", debuff: nil, narrative: "is just observing"}
+    %{dmg: 0, buff: "algo", debuff: nil, narrative: "is just observing"}
   end
 
   defp atk_action(card) do
-    %{dmg: card.power, buff: nil, debuff: nil,  narrative: "is going toward you"}
+    %{dmg: card.power, buff: nil, debuff: nil,  narrative: "is going forward"}
   end
 
   def buff_action(_card) do
-    %{dmg: nil, buff: "algo",  debuff: nil, narrative: "is just observing"}
+    %{dmg: 0, buff: "algo",  debuff: nil, narrative: "is just observing"}
   end
 
   defp def_action(_card) do
-    %{dmg: 0, buff: ["blocking"],  debuff: nil, narrative: "is going away from you"}
+    %{dmg: 0, buff: ["blocking"],  debuff: nil, narrative: "is retreating"}
   end
 end
