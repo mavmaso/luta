@@ -124,17 +124,26 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert x_list = json_response(conn, 200)["data"]["buffer"]
 
-      Process.sleep(3005)
+      Process.sleep(1505)
+
+      # action = insert(:move_set, %{type: "A", special: "blocking"})
+      # params_2 = %{arena_id: arena.id, action_id: action.id}
+
+      # conn =
+      #   login(context.conn, context.p2)
+      #   |> post(Routes.combat_path(context.conn, :actions, params_2))
+
+      Process.sleep(1505)
 
       conn =
         login(context.conn, context.p1)
         |> get(Routes.combat_path(context.conn, :sync, arena.id))
 
       assert subject = json_response(conn, 200)["data"]
-      # IO.inspect subject
       assert subject["info"]["scena"] == 2
       assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 2
-      # assert subject["info"]["p2"]["hps"] == 100 - action.power
+      assert subject["info"]["p2"]["hps"] == 100 - (context.c1.atk + action.power)
+      assert subject["info"]["p1"]["hps"] == context.c1.hps
     end
   end
 

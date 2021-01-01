@@ -37,10 +37,10 @@ defmodule Luta.ETS do
   """
   def insert_player(table, arena, :p1) do
     :ets.insert(table, {:p1, %{
-      hps: arena.char1.hps,
-      status: ["normal"],
       id: arena.p1_id,
       char_id: arena.char1_id,
+      hps: arena.char1.hps,
+      status: ["normal"],
       atk: arena.char1.atk,
       def: arena.char1.def,
       spd: arena.char1.spd,
@@ -50,15 +50,26 @@ defmodule Luta.ETS do
 
   def insert_player(table, arena, :p2) do
     :ets.insert(table, {:p2, %{
-      hps: arena.char2.hps,
-      status: ["normal"],
       id: arena.p2_id,
       char_id: arena.char2_id,
+      hps: arena.char2.hps,
+      status: ["normal"],
       atk: arena.char2.atk,
       def: arena.char2.def,
       spd: arena.char2.spd,
     }})
     :ets.insert(table, {:buffer_p2, []})
+  end
+
+  @doc """
+  WIP
+  """
+  def update_player(table, status, :p1) do
+    :ets.insert(table, {:p1, status})
+  end
+
+  def update_player(table, status, :p2) do
+    :ets.insert(table, {:p2, status})
   end
 
   @doc """

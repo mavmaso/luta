@@ -78,11 +78,31 @@ defmodule Luta.Combat do
   """
   def proc([%{dmg: dmg_1} = action_1, %{dmg: dmg_2} = action_2], combat)
     when (dmg_1 != 0 or dmg_2 != 0) do
-    [action_1, action_2, combat]
-    "WIP"
+    # WIP
+    p1 = ETS.lookup(combat, :p1)
+    p2 = ETS.lookup(combat, :p2)
+
+    hp_p1 = damager(p2, p1, action_2.dmg)
+    hp_p2 = damager(p1, p2, action_1.dmg)
+
+    new_p1 = %{p1 | hps: hp_p1}
+    new_p2 = %{p2 | hps: hp_p2}
+
+    ETS.update_player(combat, new_p1, :p1)
+    ETS.update_player(combat, new_p2, :p2)
+  end
+
+  def proc([%{buff: buff_1} = action_1, %{buff: buff_2} = action_2], combat)
+    when (length(buff_1) > 0 or length(buff_2) > 0) do
+      [action_1, action_2, combat]
+      IO.puts "-------------------"
   end
 
   def proc(_list, _combat) do
     :nada
+  end
+
+  defp damager(player, target, dmg) do
+    if dmg > 0, do: target.hps - (player.atk + dmg), else: target.hps
   end
 end
