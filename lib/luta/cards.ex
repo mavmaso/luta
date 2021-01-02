@@ -129,7 +129,7 @@ defmodule Luta.Cards do
   end
 
   def maneuver_action(_card) do
-    %{dmg: 0, buff: "algo", debuff: nil, narrative: "is just observing"}
+    %{dmg: 0, buff: ["movi"], debuff: nil, narrative: "is just observing"}
   end
 
   defp atk_action(card) do
@@ -137,7 +137,7 @@ defmodule Luta.Cards do
   end
 
   def buff_action(_card) do
-    %{dmg: 0, buff: "algo",  debuff: nil, narrative: "is just observing"}
+    %{dmg: 0, buff: ["buff"],  debuff: nil, narrative: "is just observing"}
   end
 
   defp def_action(_card) do
