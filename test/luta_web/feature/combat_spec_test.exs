@@ -163,7 +163,10 @@ defmodule LutaWeb.CombatSpecTest do
         |> post(Routes.combat_path(context.conn, :forfeit, params))
 
       assert %{"arena" => subject} = json_response(conn, 200)["data"]
+
       assert subject["status"] == "closed"
+      assert subject["loser"] == context.p1.nick
+      assert subject["winner"] == context.p2.nick
       assert_raise ArgumentError, fn -> ETS.delete_table(arena.id) end
     end
   end

@@ -27,12 +27,13 @@ defmodule Luta.AuthTest do
 
       assert {:ok, %User{} = user} = Auth.create_user(params)
       assert user.login == params.login
+      assert user.nick == params.nick
       # assert user.password == params.password
     end
 
     test "create_user/1 with invalid data returns error changeset" do
-      insert(:user, %{login: "usei"})
-      params = params_for(:user, %{login: "usei"})
+      insert(:user, %{login: "usei", nick: "macaco"})
+      params = params_for(:user, %{login: "usei", nick: "macaco"})
 
       assert {:error, %Ecto.Changeset{}} = Auth.create_user(params)
     end
