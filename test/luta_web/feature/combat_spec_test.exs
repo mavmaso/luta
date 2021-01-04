@@ -164,7 +164,7 @@ defmodule LutaWeb.CombatSpecTest do
 
       assert %{"arena" => subject} = json_response(conn, 200)["data"]
       assert subject["status"] == "closed"
-      assert false == ETS.delete_table(arena.id)
+      assert_raise ArgumentError, fn -> ETS.delete_table(arena.id) end
     end
   end
 

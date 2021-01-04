@@ -38,4 +38,16 @@ defmodule LutaWeb.CombatController do
       json(conn, %{data: %{arena: arena, info: info}})
     end
   end
+
+  def forfeit(conn, params) do
+    with %Battle.Arena{} = arena <- Battle.get_arena!(params["arena_id"]),
+      {:ok, _} <- Battle.check_arena!(arena, "fighting"),
+      current_user <- Utils.get_current_user(conn),
+      {:ok, _player} <- Battle.check_player!(arena.id, current_user.id) do
+        {:ok, neo_arena} = Battle.update_arena(arena, %{status: "closed"})
+        Luta.ETS.delete_table(arena.id)
+
+        json(conn, %{data: %{arena: neo_arena}})
+    end
+  end
 end
