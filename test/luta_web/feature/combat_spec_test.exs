@@ -154,8 +154,7 @@ defmodule LutaWeb.CombatSpecTest do
   end
 
   describe "forfeit" do
-    @tag :skip
-    test "a battle w/2 players. Returns :ok", context do
+    test "a battle w/2 players. as a P1 Returns :ok", context do
       arena = Luta.Combat.start(context.arena)
       params = %{arena_id: arena.id}
 
