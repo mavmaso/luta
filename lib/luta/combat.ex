@@ -78,7 +78,6 @@ defmodule Luta.Combat do
   """
   def proc([%{dmg: dmg_1} = action_1, %{dmg: dmg_2} = action_2], combat)
     when (dmg_1 != 0 or dmg_2 != 0) do
-      IO.inspect action_2
     # WIP
     p1 = ETS.lookup(combat, :p1)
     p2 = ETS.lookup(combat, :p2)
