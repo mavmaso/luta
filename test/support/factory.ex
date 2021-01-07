@@ -5,4 +5,5 @@ defmodule Luta.Factory do
   use Luta.UserFactory
   use Luta.FighterFactory
   use Luta.MoveSetFactory
+  use Luta.ProfileFactory
 end
