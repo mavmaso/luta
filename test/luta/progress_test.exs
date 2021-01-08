@@ -42,10 +42,10 @@ defmodule Luta.ProgressTest do
       params = params_for(:profile)
 
       assert {:ok, %Profile{} = profile} = Progress.update_profile(profile, params)
-      assert profile.defeats == 43
-      assert profile.matches == 43
-      assert profile.season == "some updated season"
-      assert profile.victories == 43
+      assert profile.defeats == params.defeats
+      assert profile.matches == params.matches
+      assert profile.season == params.season
+      assert profile.victories == params.victories
     end
 
     # test "update_profile/2 with invalid data returns error changeset" do

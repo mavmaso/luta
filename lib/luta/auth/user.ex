@@ -7,7 +7,6 @@ defmodule Luta.Auth.User do
     field :login, :string
     field :password, :string
     field :nick, :string
-    # field :secret, :string, virtual: true
 
     timestamps()
   end
@@ -22,10 +21,6 @@ defmodule Luta.Auth.User do
     |> unique_constraint(:nick)
     |> put_password()
   end
-
-  # defp put_password(%Ecto.Changeset{changes: %{secret: secret}} = changeset) do
-  #   change(changeset, password: secret)
-  # end
 
   defp put_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     change(changeset, password: Bcrypt.hash_pwd_salt(password))

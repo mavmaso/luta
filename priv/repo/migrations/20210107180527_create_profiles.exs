@@ -7,11 +7,12 @@ defmodule Luta.Repo.Migrations.CreateProfiles do
       add :victories, :integer
       add :defeats, :integer
       add :season, :string
-      add :user, references(:users, on_delete: :nothing)
+
+      add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:profiles, [:user])
+    create index(:profiles, [:user_id])
   end
 end
