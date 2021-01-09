@@ -116,7 +116,7 @@ defmodule Luta.Cards do
   end
 
   defp not_null(card) do
-    if is_nil(card), do: %MoveSet{type: "W", start_up: 10}, else: card
+    if is_nil(card), do: %MoveSet{type: "A", start_up: 1}, else: card
   end
 
   defp card_reader(card) do
@@ -128,7 +128,7 @@ defmodule Luta.Cards do
     end
   end
 
-  def maneuver_action(_card) do
+  defp maneuver_action(_card) do
     %{dmg: 0, buff: ["movi"], debuff: nil, narrative: "is just observing"}
   end
 
@@ -136,7 +136,7 @@ defmodule Luta.Cards do
     %{dmg: card.power, buff: nil, debuff: nil,  narrative: "is going forward"}
   end
 
-  def buff_action(_card) do
+  defp buff_action(_card) do
     %{dmg: 0, buff: ["buff"],  debuff: nil, narrative: "is just observing"}
   end
 
