@@ -21,6 +21,13 @@ defmodule Luta.Progress do
     Repo.all(Profile)
   end
 
+
+  def list_profile_by_season(season) do
+    Profile
+    |> where([p], p.season == ^season)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single profile.
 
@@ -72,6 +79,7 @@ defmodule Luta.Progress do
     |> Profile.changeset(attrs)
     |> Repo.update()
   end
+
 
   @doc """
   Deletes a profile.

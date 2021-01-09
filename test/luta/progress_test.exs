@@ -23,7 +23,6 @@ defmodule Luta.ProgressTest do
     end
 
     test "create_profile/1 with valid data creates a profile" do
-      profile = insert(:profile)
       params = %{matches: 40, victories: 10, defeats: 15, season: "2020-season"}
 
       assert {:ok, %Profile{} = profile} = Progress.create_profile(params)

@@ -16,6 +16,7 @@ defmodule LutaWeb.Router do
 
     get "/arenas", ArenaController, :index
     get "/arena/:id", ArenaController, :show
+    get "/profiles/:season", ProfileController, :index
 
     post "/sign_up", UserController, :create
     post "/login", UserController, :login

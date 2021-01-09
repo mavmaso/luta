@@ -2,6 +2,7 @@ defmodule Luta.Progress.Profile do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:defeats, :matches, :season, :victories, :user_id]}
   schema "profiles" do
     field :defeats, :integer
     field :matches, :integer
