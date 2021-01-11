@@ -43,12 +43,19 @@ defmodule Luta.CombatServer do
     scena = ETS.lookup(combat, "scena")
 
     buffer_p1 = ETS.lookup(combat, "buffer_p1")
-    {_p1_action, list_1} = List.pop_at(buffer_p1, 0)
+    {p1_card, list_1} = List.pop_at(buffer_p1, 0)
     ETS.insert_buffer(combat, list_1, :buffer_p1)
 
     buffer_p2 = ETS.lookup(combat, "buffer_p2")
-    {_p2_action, list_2} = List.pop_at(buffer_p2, 0)
+    {p2_card, list_2} = List.pop_at(buffer_p2, 0)
     ETS.insert_buffer(combat, list_2, :buffer_p2)
+
+    Combat.resolver(%{
+      p1: nil,
+      p1_card: Cards.not_null(p1_card),
+      p2: nil,
+      p2_card: Cards.not_null(p2_card),
+    })
 
     case arena.status do
       "closed" ->

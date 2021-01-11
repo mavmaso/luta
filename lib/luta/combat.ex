@@ -75,6 +75,13 @@ defmodule Luta.Combat do
     :nada
   end
 
+  @doc """
+  WIP
+  """
+  def resolver(map) do
+    map.p1_card.type
+  end
+
   def damager(player, target, dmg) do
     if dmg > 0, do: target.hps - (player.atk + dmg), else: target.hps
   end

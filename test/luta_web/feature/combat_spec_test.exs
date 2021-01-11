@@ -109,7 +109,7 @@ defmodule LutaWeb.CombatSpecTest do
 
   describe "run_buffer" do
     @tag :heavy
-    test "check secound scena's results", context do
+    test "check first scena's results", context do
       arena = Luta.Combat.start(context.arena)
       action = insert(:move_set, %{power: 10})
       params = %{arena_id: arena.id, action_id: action.id}
@@ -124,15 +124,13 @@ defmodule LutaWeb.CombatSpecTest do
 
       Process.sleep(1505)
 
-      Process.sleep(1505)
-
       conn =
         login(context.conn, context.p1)
         |> get(Routes.combat_path(context.conn, :sync, arena.id))
 
       assert subject = json_response(conn, 200)["data"]
-      assert subject["info"]["scena"] == 2
-      assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 2
+      assert subject["info"]["scena"] == 1
+      assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 1
       assert subject["info"]["p2"]["hps"] == 100 - (context.c1.atk + action.power)
       assert subject["info"]["p1"]["hps"] == context.c1.hps
     end

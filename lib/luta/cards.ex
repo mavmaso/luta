@@ -116,6 +116,6 @@ defmodule Luta.Cards do
   # end
 
   def not_null(card) do
-    if is_nil(card), do: %MoveSet{type: "A", start_up: 1}, else: card
+    if is_nil(card), do: %MoveSet{description: "nil" ,type: "A", start_up: 1}, else: card
   end
 end
