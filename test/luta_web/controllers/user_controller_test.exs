@@ -9,7 +9,7 @@ defmodule LutaWeb.UserControllerTest do
 
   describe "sign_up" do
     test "w/ user and returns it self and jwt w/ status :ok", %{conn: conn} do
-      params = %{user: %{login: "algo", password: "somepassword"}}
+      params = %{user: params_for(:user, %{password: "somepassword"})}
 
       conn = post(conn, Routes.user_path(conn, :create, params))
 

@@ -111,7 +111,6 @@ defmodule LutaWeb.CombatSpecTest do
   describe "run_buffer" do
     @tag :heavy
     test "check secound scena's results", context do
-      # combat = Utils.combat_atom(context.arena.id)
       arena = Luta.Combat.start(context.arena)
       action = insert(:move_set, %{power: 10})
       params = %{arena_id: arena.id, action_id: action.id}
@@ -126,15 +125,6 @@ defmodule LutaWeb.CombatSpecTest do
 
       Process.sleep(1505)
 
-      action_2 = insert(:move_set, %{type: "A", special: "blocking", power: 0})
-      params_2 = %{arena_id: arena.id, action_id: action_2.id}
-
-      conn =
-        login(context.conn, context.p2)
-        |> post(Routes.combat_path(context.conn, :actions, params_2))
-
-      assert %{"type" => "A"} = json_response(conn, 200)["data"]["buffer"] |> hd
-
       Process.sleep(1505)
 
       conn =
@@ -144,7 +134,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject = json_response(conn, 200)["data"]
       assert subject["info"]["scena"] == 2
       assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 2
-      assert subject["info"]["p2"]["hps"] == 100 - ((context.c1.atk + action.power) - 10)
+      assert subject["info"]["p2"]["hps"] == 100 - (context.c1.atk + action.power)
       assert subject["info"]["p1"]["hps"] == context.c1.hps
     end
   end
@@ -154,8 +144,7 @@ defmodule LutaWeb.CombatSpecTest do
   end
 
   describe "forfeit" do
-    @tag :skip
-    test "a battle w/2 players. Returns :ok", context do
+    test "a battle w/2 players. as a P1 Returns :ok", context do
       arena = Luta.Combat.start(context.arena)
       params = %{arena_id: arena.id}
 
@@ -164,8 +153,11 @@ defmodule LutaWeb.CombatSpecTest do
         |> post(Routes.combat_path(context.conn, :forfeit, params))
 
       assert %{"arena" => subject} = json_response(conn, 200)["data"]
+
       assert subject["status"] == "closed"
-      assert false == ETS.delete_table(arena.id)
+      assert subject["loser"] == context.p1.nick
+      assert subject["winner"] == context.p2.nick
+      assert_raise ArgumentError, fn -> ETS.delete_table(arena.id) end
     end
   end
 

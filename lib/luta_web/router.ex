@@ -32,6 +32,8 @@ defmodule LutaWeb.Router do
 
     post "/start", CombatController, :start
     post "/actions", CombatController, :actions
+    post "/forfeit", CombatController, :forfeit
+
     get "/sync/:id", CombatController, :sync
   end
 

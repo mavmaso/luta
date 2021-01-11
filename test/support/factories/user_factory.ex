@@ -4,7 +4,8 @@ defmodule Luta.UserFactory do
       def user_factory do
         %Luta.Auth.User{
           login: "login-#{Faker.Lorem.word()}.#{Faker.random_between(0, 100)}",
-          password: "$2b$12$iWNYYuxNcQhaUuJ82jLKu..jbrQQl8..it6K5AvdVovOwDmLX2OVu"
+          password: "$2b$12$iWNYYuxNcQhaUuJ82jLKu..jbrQQl8..it6K5AvdVovOwDmLX2OVu",
+          nick: "nick-#{Faker.Lorem.word()}.#{Faker.random_between(0, 100)}"
         }
       end
     end
