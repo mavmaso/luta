@@ -80,6 +80,18 @@ defmodule Luta.Combat do
   """
   def resolver(map) do
     map.p1_card.type
+
+    flow(map.p1_card.type, map.p2_card.type) |> IO.inspect
+  end
+
+  defp flow(p1_type, p2_type) do
+    case p1_type <> p2_type do
+      "AA" -> :face
+      "DW" -> :p1_adv
+      "DS" -> :p1_adv
+      "DA" -> :p2_guard
+      _ -> :nada
+    end
   end
 
   def damager(player, target, dmg) do
