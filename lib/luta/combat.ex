@@ -64,14 +64,9 @@ defmodule Luta.Combat do
     p2 = ETS.lookup(combat, "p2")
     bp2 = ETS.lookup(combat, "buffer_p2") |> length()
 
-    stage = ETS.lookup(combat, "stage")
-
-    %{p1: p1, buffer_1_size: bp1, p2: p2, buffer_2_size: bp2, scena: scena, narrator: narrator(stage)}
+    %{p1: p1, buffer_1_size: bp1, p2: p2, buffer_2_size: bp2, scena: scena}
   end
 
-  defp narrator([%{narrative: n_1}, %{narrative: n_2}]) do
-    [n_1, n_2]
-  end
 
   @doc """
   WIP
@@ -80,7 +75,7 @@ defmodule Luta.Combat do
     :nada
   end
 
-  defp damager(player, target, dmg) do
+  def damager(player, target, dmg) do
     if dmg > 0, do: target.hps - (player.atk + dmg), else: target.hps
   end
 end
