@@ -102,45 +102,20 @@ defmodule Luta.Cards do
     MoveSet.changeset(move_set, attrs)
   end
 
-  @doc """
-  WIP
-  """
-  def card_resolver(card_1, card_2) do
-    neo_card_1 = not_null(card_1)
-    neo_card_2 = not_null(card_2)
+  # @doc """
+  # WIP
+  # """
+  # def card_resolver(card_1, card_2) do
+  #   neo_card_1 = not_null(card_1)
+  #   neo_card_2 = not_null(card_2)
 
-    action_1 = card_reader(neo_card_1)
-    action_2 = card_reader(neo_card_2)
+  #   action_1 = card_reader(neo_card_1)
+  #   action_2 = card_reader(neo_card_2)
 
-    [action_1, action_2]
-  end
+  #   [action_1, action_2]
+  # end
 
-  defp not_null(card) do
+  def not_null(card) do
     if is_nil(card), do: %MoveSet{type: "A", start_up: 1}, else: card
-  end
-
-  defp card_reader(card) do
-    case card.type do
-      "W" -> maneuver_action(card)
-      "A" -> def_action(card)
-      "S" -> buff_action(card)
-      "D" -> atk_action(card)
-    end
-  end
-
-  defp maneuver_action(_card) do
-    %{dmg: 0, buff: ["movi"], debuff: nil, narrative: "is just observing"}
-  end
-
-  defp atk_action(card) do
-    %{dmg: card.power, buff: nil, debuff: nil,  narrative: "is going forward"}
-  end
-
-  defp buff_action(_card) do
-    %{dmg: 0, buff: ["buff"],  debuff: nil, narrative: "is just observing"}
-  end
-
-  defp def_action(_card) do
-    %{dmg: 0, buff: ["blocking"],  debuff: nil, narrative: "is retreating"}
   end
 end
