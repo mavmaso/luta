@@ -111,6 +111,7 @@ defmodule LutaWeb.CombatSpecTest do
     @tag :heavy
     test "check first scena's results", context do
       arena = Luta.Combat.start(context.arena)
+      c2 = context.c2
       action = insert(:move_set, %{power: 10})
       params = %{arena_id: arena.id, action_id: action.id}
 
@@ -131,7 +132,7 @@ defmodule LutaWeb.CombatSpecTest do
       assert subject = json_response(conn, 200)["data"]
       assert subject["info"]["scena"] == 1
       assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 1
-      assert subject["info"]["p2"]["hps"] == 100 - (context.c1.atk + action.power)
+      assert subject["info"]["p2"]["hps"] == c2.hps - ((context.c1.atk + action.power) - c2.def)
       assert subject["info"]["p1"]["hps"] == context.c1.hps
     end
   end

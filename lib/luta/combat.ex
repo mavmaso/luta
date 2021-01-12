@@ -79,19 +79,78 @@ defmodule Luta.Combat do
   WIP
   """
   def resolver(map) do
-    map.p1_card.type
-
-    flow(map.p1_card.type, map.p2_card.type) |> IO.inspect
+    flow(map.p1_card.type, map.p2_card.type)
+    |> calcs(map)
   end
 
   defp flow(p1_type, p2_type) do
     case p1_type <> p2_type do
       "AA" -> :face
+      "AW" -> :p2_set
+      "AS" -> :p2_set
+      "AD" -> :p1_guard
+
+      "WA" -> :p1_set
+      "Ww" -> :setup
+      "WS" -> :setup
+      "WD" -> :p2_adv
+
+      "SA" -> :p1_set
+      "SW" -> :setup
+      "SS" -> :setup
+      "SD" -> :p2_adv
+
+      "DA" -> :p2_guard
       "DW" -> :p1_adv
       "DS" -> :p1_adv
-      "DA" -> :p2_guard
-      _ -> :nada
+      "DD" -> :duel
     end
+  end
+
+  def calcs(:p1_adv,map) do
+    map
+  end
+
+  def calcs(:p1_set, map) do
+    map
+  end
+
+  def calcs(:p1_guard, map) do
+    map
+  end
+
+  def calcs(:p2_adv,map) do
+    map
+  end
+
+  def calcs(:p2_set, map) do
+    map
+  end
+
+  def calcs(:p2_guard, map) do
+    p1 = ETS.lookup(map.combat, "p1")
+    p2 = ETS.lookup(map.combat, "p2")
+
+    dmg = map.p1_card.power + p1.atk
+    neo_hps = p2.hps - (dmg - p2.def)
+    p2 = %{ p2 | hps: neo_hps}
+
+    ETS.update_player(map.combat, p2, :p2)
+  end
+
+  def calcs(:duel, map) do
+    map.p1_card
+    :nada
+  end
+
+  def calcs(:setup, map) do
+    map.p1_card
+    :nada
+  end
+
+  def calcs(:face, map) do
+    map.p1_card
+    :nada
   end
 
   def damager(player, target, dmg) do

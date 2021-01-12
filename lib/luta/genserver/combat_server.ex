@@ -51,9 +51,8 @@ defmodule Luta.CombatServer do
     ETS.insert_buffer(combat, list_2, :buffer_p2)
 
     Combat.resolver(%{
-      p1: nil,
+      combat: combat,
       p1_card: Cards.not_null(p1_card),
-      p2: nil,
       p2_card: Cards.not_null(p2_card),
     })
 
