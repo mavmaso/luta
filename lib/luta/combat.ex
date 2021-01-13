@@ -107,29 +107,28 @@ defmodule Luta.Combat do
     end
   end
 
-  def calcs(:p1_adv,map) do
+  defp calcs(:p1_adv,map) do
     map
   end
 
-  def calcs(:p1_set, map) do
+  defp calcs(:p1_set, map) do
     map
   end
 
-  def calcs(:p1_guard, map) do
+  defp calcs(:p1_guard, map) do
     map
   end
 
-  def calcs(:p2_adv,map) do
+  defp calcs(:p2_adv,map) do
     map
   end
 
-  def calcs(:p2_set, map) do
+  defp calcs(:p2_set, map) do
     map
   end
 
-  def calcs(:p2_guard, map) do
-    p1 = ETS.lookup(map.combat, "p1")
-    p2 = ETS.lookup(map.combat, "p2")
+  defp calcs(:p2_guard, map) do
+    [p1, p2] = get_players(map.combat)
 
     dmg = map.p1_card.power + p1.atk
     neo_hps = p2.hps - (dmg - p2.def)
@@ -138,19 +137,34 @@ defmodule Luta.Combat do
     ETS.update_player(map.combat, p2, :p2)
   end
 
-  def calcs(:duel, map) do
+  defp calcs(:duel, map) do
+    [_p1, _p2] = get_players(map.combat)
+
+    compare = map.p1_card.start_up - map.p2_card.start_up
+    _prime =
+      cond do
+        ^compare = 0 -> Enum.random([:p1, :p2])
+        ^compare > 1 -> :p2
+        ^compare < 1 -> :p1
+      end
+
+    :duel
+  end
+
+  defp calcs(:setup, map) do
     map.p1_card
     :nada
   end
 
-  def calcs(:setup, map) do
+  defp calcs(:face, map) do
     map.p1_card
     :nada
   end
 
-  def calcs(:face, map) do
-    map.p1_card
-    :nada
+  def get_players(combat) do
+    p1 = ETS.lookup(combat, "p1")
+    p2 = ETS.lookup(combat, "p2")
+    [p1,p2]
   end
 
   def damager(player, target, dmg) do
