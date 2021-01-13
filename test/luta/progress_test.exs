@@ -5,9 +5,9 @@ defmodule Luta.ProgressTest do
 
   alias Luta.Progress
 
-  describe "profiles" do
-    alias Luta.Progress.Profile
+  alias Luta.Progress.Profile
 
+  describe "profiles" do
     test "list_profiles/0 returns all profiles" do
       profile = insert(:profile)
 
@@ -58,5 +58,18 @@ defmodule Luta.ProgressTest do
       assert {:ok, %Profile{}} = Progress.delete_profile(profile)
       assert_raise Ecto.NoResultsError, fn -> Progress.get_profile!(profile.id) end
     end
+  end
+
+  describe "battle_record/3" do
+     test "when valid data, returns :ok" do
+      arena = insert(:arena)
+      profile_a = insert(:profile, %{victories: 0, defeats: 0, matches: 0})
+      profile_b = insert(:profile, %{victories: 0, defeats: 0, matches: 0})
+
+      assert :ok = Progress.battle_record(arena, profile_a.user, profile_b.user)
+
+      assert %Profile{victories: 1, matches: 1} = Progress.get_profile!(profile_a.id)
+      assert %Profile{defeats: 1, matches: 1} = Progress.get_profile!(profile_b.id)
+     end
   end
 end

@@ -4,10 +4,10 @@ defmodule Luta.Progress.Profile do
 
   @derive {Jason.Encoder, only: [:defeats, :matches, :season, :victories, :user_id]}
   schema "profiles" do
-    field :defeats, :integer
-    field :matches, :integer
+    field :defeats, :integer, default: 0
+    field :matches, :integer, default: 0
     field :season, :string
-    field :victories, :integer
+    field :victories, :integer, default: 0
 
     belongs_to :user, Luta.Auth.User
 

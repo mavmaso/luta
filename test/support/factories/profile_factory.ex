@@ -4,9 +4,9 @@ defmodule Luta.ProfileFactory do
       def profile_factory do
         %Luta.Progress.Profile{
           season: "season-#{Faker.Lorem.word()}",
-          matches: 100,
-          victories: Faker.random_between(1, 10),
-          defeats: Faker.random_between(1, 10),
+          matches: 10,
+          victories: 5,
+          defeats: 5,
           user: build(:user)
         }
       end

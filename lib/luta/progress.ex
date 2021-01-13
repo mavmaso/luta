@@ -4,8 +4,9 @@ defmodule Luta.Progress do
   """
 
   import Ecto.Query, warn: false
-  alias Luta.Repo
 
+  alias Luta.Repo
+  alias Luta.Auth.User
   alias Luta.Progress.Profile
 
   @doc """
@@ -108,5 +109,9 @@ defmodule Luta.Progress do
   """
   def change_profile(%Profile{} = profile, attrs \\ %{}) do
     Profile.changeset(profile, attrs)
+  end
+
+  def battle_record(arena, %User{} = winner, %User{} = loser) do
+
   end
 end
