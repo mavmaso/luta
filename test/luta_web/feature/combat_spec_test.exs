@@ -129,11 +129,11 @@ defmodule LutaWeb.CombatSpecTest do
         login(context.conn, context.p1)
         |> get(Routes.combat_path(context.conn, :sync, arena.id))
 
-      assert subject = json_response(conn, 200)["data"]
-      assert subject["info"]["scena"] == 1
-      assert subject["info"]["buffer_1_size"] == (x_list |> length()) - 1
-      assert subject["info"]["p2"]["hps"] == c2.hps - ((context.c1.atk + action.power) - c2.def)
-      assert subject["info"]["p1"]["hps"] == context.c1.hps
+      assert subject = json_response(conn, 200)["data"]["info"]
+      assert subject["scena"] == 1
+      assert subject["buffer_1_size"] == (x_list |> length()) - 1
+      assert subject["p2"]["hps"] == c2.hps - ((context.c1.atk + action.power) - c2.def)
+      assert subject["p1"]["hps"] == context.c1.hps
     end
   end
 

@@ -138,17 +138,27 @@ defmodule Luta.Combat do
   end
 
   defp calcs(:duel, map) do
-    [_p1, _p2] = get_players(map.combat)
+    [p1, p2] = get_players(map.combat)
 
     compare = map.p1_card.start_up - map.p2_card.start_up
     _prime =
       cond do
-        ^compare = 0 -> Enum.random([:p1, :p2])
-        ^compare > 1 -> :p2
-        ^compare < 1 -> :p1
+        compare == 0 -> Enum.random([:p1, :p2])
+        compare >= 1 -> :p1
+        compare <= 1 -> :p2
       end
 
-    :duel
+    dmg = map.p1_card.power + p1.atk
+    neo_hps = p2.hps - dmg
+    p2 = %{ p2 | hps: neo_hps}
+
+    ETS.update_player(map.combat, p2, :p2)
+
+    dmg = map.p2_card.power + p2.atk
+    neo_hps = p1.hps - dmg
+    p1 = %{ p1 | hps: neo_hps}
+
+    ETS.update_player(map.combat, p1, :p1)
   end
 
   defp calcs(:setup, map) do
