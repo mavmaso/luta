@@ -13,4 +13,9 @@ defmodule Utils do
   def combat_atom(arena_id) do
     String.to_atom("@#{arena_id}")
   end
+
+  def arena_id_from_combat(combat) do
+    at_arena = to_string(combat)
+    String.at(at_arena, 1)
+  end
 end
