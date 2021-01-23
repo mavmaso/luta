@@ -57,12 +57,14 @@ defmodule Luta.FullFightSpecTest do
 
       assert subject["p2"]["hps"] == char.hps - (action.power + char.atk)
 
+      Process.sleep(1505)
+
       send_card(context.conn, arena.id, action.id, p2)
       Process.sleep(1505)
       conn = sync(conn, arena.id)
 
       assert subject = json_response(conn, 200)["data"]["info"]
-      assert subject["scena"] == 2
+      assert subject["scena"] == 3
       assert subject["buffer_2_size"] == 0
       assert subject["p1"]["hps"] < 0
 

@@ -161,9 +161,8 @@ defmodule Luta.Combat do
     :nada
   end
 
-  defp calcs(:face, map) do
-    map.p1_card
-    :nada
+  defp calcs(:face, _map) do
+    :face
   end
 
   def get_players(combat) do
