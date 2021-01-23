@@ -198,14 +198,17 @@ defmodule Luta.Combat do
   WIP
   """
   def proc(combat) do
-    arena_id = Utils.arena_id_from_combat(combat)
     [p1, p2] = get_players(combat)
-    check_defeat(p1, arena_id)
-    check_defeat(p2, arena_id)
+    check_defeat(p1, combat)
+    check_defeat(p2, combat)
     :nada
   end
 
-  def check_defeat(player, arena_id) do
-    if player.hps < 0, do: Battle.update_arena(%Battle.Arena{id: arena_id}, %{status: "closed"})
+  def check_defeat(player, combat) do
+    if player.hps < 0 do
+      Utils.arena_id_from_combat(combat)
+      |> Battle.get_arena!()
+      |> Battle.update_arena(%{status: "closed"})
+    end
   end
 end

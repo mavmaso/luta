@@ -16,6 +16,6 @@ defmodule Utils do
 
   def arena_id_from_combat(combat) do
     at_arena = to_string(combat)
-    String.at(at_arena, 1)
+    String.at(at_arena, 1) |> String.to_integer()
   end
 end

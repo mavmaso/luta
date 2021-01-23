@@ -30,7 +30,6 @@ defmodule Luta.CombatServer do
   def handle_cast(:stop, state), do: {:stop, :normal, state}
 
   def handle_info({:turn, arena_id}, state) do
-    # IO.puts "Important stuff in progress..."
     action_turn(arena_id)
 
     {:noreply, state}
@@ -58,10 +57,8 @@ defmodule Luta.CombatServer do
 
     case arena.status do
       "closed" ->
-        # IO.puts "para !!!!!!"
         :ok
       _ ->
-        # IO.puts "loopppppp"
         ETS.insert_scena(combat, scena + 1)
         Process.send_after(self(), {:turn, arena_id}, 1_500)
     end
