@@ -116,7 +116,13 @@ defmodule Luta.Combat do
   end
 
   defp calcs(:p1_guard, map) do
-    map
+    [p1, p2] = get_players(map.combat)
+
+    dmg = map.p2_card.power + p2.atk
+    neo_hps = p1.hps - (dmg - p1.def)
+    p1 = %{ p1 | hps: neo_hps}
+
+    ETS.update_player(map.combat, p1, :p1)
   end
 
   defp calcs(:p2_adv,map) do
@@ -141,24 +147,13 @@ defmodule Luta.Combat do
     [p1, p2] = get_players(map.combat)
 
     compare = map.p1_card.start_up - map.p2_card.start_up
-    _prime =
-      cond do
-        compare == 0 -> Enum.random([:p1, :p2])
-        compare >= 1 -> :p1
-        compare <= 1 -> :p2
-      end
 
-    dmg = map.p1_card.power + p1.atk
-    neo_hps = p2.hps - dmg
-    p2 = %{ p2 | hps: neo_hps}
-
-    ETS.update_player(map.combat, p2, :p2)
-
-    dmg = map.p2_card.power + p2.atk
-    neo_hps = p1.hps - dmg
-    p1 = %{ p1 | hps: neo_hps}
-
-    ETS.update_player(map.combat, p1, :p1)
+    cond do
+      compare == 0 -> Enum.random([:p1, :p2])
+      compare >= 1 -> :p1
+      compare <= 1 -> :p2
+    end
+    |> dmg_order(map, p1, p2)
   end
 
   defp calcs(:setup, map) do
@@ -177,7 +172,29 @@ defmodule Luta.Combat do
     [p1,p2]
   end
 
-  def damager(player, target, dmg) do
-    if dmg > 0, do: target.hps - (player.atk + dmg), else: target.hps
+  defp simple_dmg_p1(map, p1, p2) do
+    dmg = map.p1_card.power + p1.atk
+    neo_hps = p2.hps - dmg
+    p2 = %{ p2 | hps: neo_hps}
+
+    ETS.update_player(map.combat, p2, :p2)
+  end
+
+  defp simple_dmg_p2(map, p2, p1) do
+    dmg = map.p2_card.power + p2.atk
+    neo_hps = p1.hps - dmg
+    p1 = %{ p1 | hps: neo_hps}
+
+    ETS.update_player(map.combat, p1, :p1)
+  end
+
+  defp dmg_order(:p1 = _order, map, p1, p2) do
+    simple_dmg_p1(map, p1, p2)
+    simple_dmg_p2(map, p2, p1)
+  end
+
+  defp dmg_order(:p2 = _order, map, p1, p2) do
+    simple_dmg_p2(map, p2, p1)
+    simple_dmg_p1(map, p1, p2)
   end
 end

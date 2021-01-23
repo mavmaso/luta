@@ -19,6 +19,8 @@ defmodule LutaWeb.Router do
 
     post "/sign_up", UserController, :create
     post "/login", UserController, :login
+
+    get "/sync/:id", CombatController, :sync
   end
 
   scope "/api/v1", LutaWeb do
@@ -34,7 +36,7 @@ defmodule LutaWeb.Router do
     post "/actions", CombatController, :actions
     post "/forfeit", CombatController, :forfeit
 
-    get "/sync/:id", CombatController, :sync
+    # get "/sync/:id", CombatController, :sync
   end
 
   # Enables LiveDashboard only for development

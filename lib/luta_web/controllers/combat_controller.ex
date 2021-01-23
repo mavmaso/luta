@@ -50,7 +50,11 @@ defmodule LutaWeb.CombatController do
             :p2 -> arena.p1_id |> Luta.Auth.get_user!
           end
 
-        {:ok, neo_arena} = Battle.update_arena(arena, %{status: "closed", winner: winner.nick , loser: current_user.nick})
+        {:ok, neo_arena} = Battle.update_arena(arena, %{
+          status: "closed",
+          winner: winner.nick ,
+          loser: current_user.nick
+        })
         Luta.ETS.delete_table(arena.id)
 
         json(conn, %{data: %{arena: neo_arena}})
