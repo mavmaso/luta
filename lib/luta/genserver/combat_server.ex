@@ -51,13 +51,15 @@ defmodule Luta.CombatServer do
 
     Combat.resolver(%{
       combat: combat,
+      arena_id: arena_id,
       p1_card: Cards.not_null(p1_card),
       p2_card: Cards.not_null(p2_card),
     })
 
     case arena.status do
       "closed" ->
-        :ok
+        ETS.insert_scena(combat, scena + 1)
+        Luta.ETS.delete_table(arena.id)
       _ ->
         ETS.insert_scena(combat, scena + 1)
         Process.send_after(self(), {:turn, arena_id}, 1_500)

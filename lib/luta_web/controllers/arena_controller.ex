@@ -49,8 +49,8 @@ defmodule LutaWeb.ArenaController do
 
   def select_char(conn, %{"char1_id" => _} = params) do
     with  %Auth.User{} = player <- get_current_user(conn),
-    %Battle.Arena{} = arena <- Battle.get_arena!(params["id"]),
-    %Char.Fighter{} = char <- Char.get_fighter!(params["char1_id"]) do
+      %Battle.Arena{} = arena <- Battle.get_arena!(params["id"]),
+      %Char.Fighter{} = char <- Char.get_fighter!(params["char1_id"]) do
 
       case player.id == arena.p1_id do
         true ->
@@ -60,17 +60,15 @@ defmodule LutaWeb.ArenaController do
         false ->
           {:error, :unauthorized}
       end
-
     end
-
   end
 
   def join_arena(conn, params) do
     with %Battle.Arena{status: "open"} = arena <- Battle.get_arena!(params["arena_id"]),
       %Auth.User{} = player <- get_current_user(conn) do
 
-        {:ok, new_arena} = Battle.update_arena(arena, %{p2_id: player.id})
-        json(conn, %{data: %{arena: new_arena}})
-      end
+      {:ok, new_arena} = Battle.update_arena(arena, %{p2_id: player.id})
+      json(conn, %{data: %{arena: new_arena}})
     end
+  end
 end

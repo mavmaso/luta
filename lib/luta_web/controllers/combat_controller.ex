@@ -43,20 +43,8 @@ defmodule LutaWeb.CombatController do
     with %Battle.Arena{} = arena <- Battle.get_arena!(params["arena_id"]),
       {:ok, _} <- Battle.check_arena!(arena, "fighting"),
       current_user <- Utils.get_current_user(conn),
-      {:ok, player} <- Battle.check_player!(arena.id, current_user.id) do
-        winner =
-          case player do
-            :p1 -> arena.p2_id |> Luta.Auth.get_user!
-            :p2 -> arena.p1_id |> Luta.Auth.get_user!
-          end
-
-        {:ok, neo_arena} = Battle.update_arena(arena, %{
-          status: "closed",
-          winner: winner.nick ,
-          loser: current_user.nick
-        })
-        Luta.ETS.delete_table(arena.id)
-
+      {:ok, player_atom} <- Battle.check_player!(arena.id, current_user.id) do
+        neo_arena = Battle.close_arena(arena, player_atom, current_user)
         json(conn, %{data: %{arena: neo_arena}})
     end
   end

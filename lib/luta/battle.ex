@@ -4,7 +4,7 @@ defmodule Luta.Battle do
   """
 
   import Ecto.Query, warn: false
-  alias Luta.Repo
+  alias Luta.{Repo, Auth}
   alias Luta.Battle.Arena
 
   @doc """
@@ -120,6 +120,21 @@ defmodule Luta.Battle do
       %Arena{p2_id: ^user_id} -> {:ok, :p2}
       _ -> {:error, :player_not_found}
     end
+  end
+
+  def close_arena(arena, player_atom, player) do
+    winner =
+      case player_atom do
+        :p1 -> arena.p2_id |> Auth.get_user!
+        :p2 -> arena.p1_id |> Auth.get_user!
+      end
+
+    {:ok, neo_arena} = update_arena(arena, %{
+      status: "closed",
+      winner: winner.nick,
+      loser: Auth.get_user!(player.id).nick
+    })
+    neo_arena
   end
 
   # def check_viewer!(arena_id, user_id) do

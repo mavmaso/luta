@@ -115,7 +115,7 @@ defmodule Luta.Combat do
     p1 = %{ p1 | hps: neo_hps}
 
     ETS.update_player(map.combat, p1, :p1)
-    proc(map.combat)
+    proc(map)
   end
 
   defp calcs(:p2_adv,map) do
@@ -134,7 +134,7 @@ defmodule Luta.Combat do
     p2 = %{ p2 | hps: neo_hps}
 
     ETS.update_player(map.combat, p2, :p2)
-    proc(map.combat)
+    proc(map)
   end
 
   defp calcs(:duel, map) do
@@ -156,7 +156,7 @@ defmodule Luta.Combat do
   end
 
   defp calcs(:face, map) do
-    proc(map.combat)
+    proc(map)
     :face
   end
 
@@ -172,7 +172,7 @@ defmodule Luta.Combat do
     p2 = %{ p2 | hps: neo_hps}
 
     ETS.update_player(map.combat, p2, :p2)
-    map.combat
+    map
   end
 
   defp simple_dmg_p2(map, p2, p1) do
@@ -181,7 +181,7 @@ defmodule Luta.Combat do
     p1 = %{ p1 | hps: neo_hps}
 
     ETS.update_player(map.combat, p1, :p1)
-    map.combat
+    map
   end
 
   defp dmg_order(:p1 = _order, map, p1, p2) do
@@ -197,18 +197,19 @@ defmodule Luta.Combat do
   @doc """
   WIP
   """
-  def proc(combat) do
-    [p1, p2] = get_players(combat)
-    check_defeat(p1, combat)
-    check_defeat(p2, combat)
+  def proc(map) do
+    [p1, p2] = get_players(map.combat)
+    check_defeat(p1, map.arena_id)
+    check_defeat(p2, map.arena_id)
     :nada
   end
 
-  def check_defeat(player, combat) do
+  def check_defeat(player, arena_id) do
     if player.hps < 0 do
-      Utils.arena_id_from_combat(combat)
-      |> Battle.get_arena!()
-      |> Battle.update_arena(%{status: "closed"})
+      {:ok, player_atom} = Battle.check_player!(arena_id, player.id)
+
+      Battle.get_arena!(arena_id)
+      |> Battle.close_arena(player_atom, player)
     end
   end
 end

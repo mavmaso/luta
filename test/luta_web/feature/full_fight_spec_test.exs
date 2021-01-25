@@ -72,7 +72,7 @@ defmodule Luta.FullFightSpecTest do
 
       assert x_arena = json_response(conn, 200)["data"]["arena"]
       assert x_arena["status"] == "closed"
-      # assert x_arena["winner"] == p2.nick
+      assert x_arena["winner"] == p2.nick
     end
   end
 end
