@@ -1,11 +1,30 @@
-# Script for populating the database. You can run it as:
-#
-#     mix run priv/repo/seeds.exs
-#
-# Inside the script, you can read and write to any of your
-# repositories directly:
-#
-#     Luta.Repo.insert!(%Luta.SomeSchema{})
-#
-# We recommend using the bang functions (`insert!`, `update!`
-# and so on) as they will fail if something goes wrong.
+alias Luta.Repo
+
+## CHARS
+
+Repo.insert!(%Luta.Char.Fighter{
+  title: "Ninja Pop",
+  atk: "5",
+  def: "3",
+  spd: "7",
+  hps: "65",
+})
+
+
+## CARDS
+
+Repo.insert!(%Luta.Cards.MoveSet{
+  type: "D",
+  description: "Ataque de Katana",
+  power: 5,
+  special: "nada",
+  start_up: 3
+})
+
+Repo.insert!(%Luta.Cards.MoveSet{
+  type: "A",
+  description: "Bloqueio",
+  power: 2,
+  special: "nada",
+  start_up: 3
+})
