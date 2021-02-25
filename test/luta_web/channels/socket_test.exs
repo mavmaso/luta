@@ -3,11 +3,9 @@ defmodule Luta.SocketTest do
 
   alias LutaWeb.{UserSocket}
 
-  # setup do
-  #   ChannelSessions.clear
-
-  #   {:ok}
-  # end
+  setup do
+    {:ok}
+  end
 
   describe "sockets" do
     test "primeiro" do
