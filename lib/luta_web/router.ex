@@ -29,6 +29,7 @@ defmodule LutaWeb.Router do
     get "/my_user", UserController, :show
 
     resources "/arena", ArenaController, only: [:create, :delete]
+
     put "/join_arena", ArenaController, :join_arena
     put "/select_char", ArenaController, :select_char
 

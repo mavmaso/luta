@@ -83,7 +83,7 @@ defmodule Luta.Combat do
       "AD" -> :p1_guard
 
       "WA" -> :p1_set
-      "Ww" -> :setup
+      "WW" -> :setup
       "WS" -> :setup
       "WD" -> :p2_adv
 
