@@ -31,18 +31,23 @@ Luta
 ## Endpoint
 
  - Sign up ( /api/v1/sign_up )
+ """
  {
 	"user": {
 		"login": "sasuke",
 		"password": "123123"
 	}
  }
+ """
 
  - Login ( /api/v1/login )
+ """
   {
 	"login": "sasuke",
 	"password": "123123"
   }
+  """
+
 ## Contribuindo
 
 
