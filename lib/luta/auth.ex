@@ -18,8 +18,7 @@ defmodule Luta.Auth do
   end
 
   defp login_password_auth(login, password) when is_binary(login) and is_binary(password) do
-    with {:ok, user} <- get_by_login(login),
-    do: verify_password(password, user)
+    with {:ok, user} <- get_by_login(login), do: verify_password(password, user)
   end
 
   defp get_by_login(login) when is_binary(login) do

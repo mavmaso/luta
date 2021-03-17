@@ -34,7 +34,7 @@ Luta
  ```
  {
 	"user": {
-		"login": "sasuke",
+		"login": "tester",
 		"password": "123123"
 	}
  }
@@ -43,7 +43,7 @@ Luta
  - Login ( /api/v1/login )
  ```
   {
-	"login": "sasuke",
+	"login": "test1",
 	"password": "123123"
   }
   ```
