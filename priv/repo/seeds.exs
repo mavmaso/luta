@@ -12,3 +12,4 @@ Repo.insert!(%Auth.User{
   })
 
 Repo.insert!(%Battle.Arena{name: "test", status: "closed"})
+Repo.insert!(%Battle.Arena{name: "outra", status: "closed"})
