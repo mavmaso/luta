@@ -4,6 +4,7 @@ defmodule LutaWeb.Router do
   alias Luta.Guardian
 
   pipeline :api do
+    plug CORSPlug, origin: "*"
     plug :accepts, ["json"]
   end
 

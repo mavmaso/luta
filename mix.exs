@@ -48,7 +48,8 @@ defmodule Luta.MixProject do
       {:faker, "~> 0.16", only: :test},
       {:observer_cli, "~> 1.6"},
       {:bcrypt_elixir, "~> 2.0"},
-      {:guardian, "~> 2.0"}
+      {:guardian, "~> 2.0"},
+      {:cors_plug, "~> 2.0"},
     ]
   end
 
